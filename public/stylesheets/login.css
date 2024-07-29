@@ -1,0 +1,276 @@
+body{
+    margin: 0;
+    background-color: rgb(64, 64, 64);
+
+}
+#first{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+@keyframes loder {
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+}
+#form{
+    color: white;
+    animation: loder 2s;
+    position: absolute;
+    margin:0;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+    width: fit-content;
+    /* justify-content: center; */
+    padding: 30px;
+    border-radius: 15px;
+    background: rgb(197, 197, 197,0.1);
+    backdrop-filter: blur(10px);
+
+}
+#form #input1{
+    width: 400px;
+    height: 40px;
+    padding: 0px 20px;
+    font-size: 20px;
+    color: rgb(0, 0, 0);
+    border:none;
+    margin-bottom: 20px;
+    background: rgb(197, 197, 197,0.4);
+    backdrop-filter: blur(10px);
+    opacity: 0.5;
+}
+#input2{
+    padding: 0px 20px;
+    color: rgb(0, 0, 0);
+    width: 350px;
+    height: 40px;
+    font-size: 20px;
+    margin-bottom: 20px;
+    border:none;
+    background: transparent;
+}
+input::placeholder{
+    color: white;
+}
+.pass{
+    top: 0;
+    display: flex;
+    height: 40px;
+    background: rgb(197, 197, 197,0.4);
+    backdrop-filter: blur(10px);
+    opacity: 0.5;
+    /* align-items: center; */
+}
+i{
+   margin: auto;
+    color: rgb(61, 60, 60);
+    font-size: 15px;
+   }
+#show{
+    display: flex;
+}
+#hide{
+    display: none;
+}
+#form:hover{
+    transition: 0.5s;
+    /* font-size: 25px; */
+    box-shadow: 5px 5px 10px rgb(60, 60, 60);
+
+}
+a{
+    text-decoration: none;
+    color: white;
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+#login{
+    font-size: 25px;
+    height: 40px;
+    width:200px;
+    border-radius: 20px;
+    color: gray;
+    border: none;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+}
+#login:hover{
+    transition: 0.5s;
+    color: black;
+    box-shadow: 0px 5px 10px rgb(59, 59, 59);
+}
+#sign{
+    font-size: 25px;
+    height: 40px;
+    width: 200px;
+    border-radius: 20px;
+    color: white;
+    border: none;
+    background-color: gray;
+}
+#sign:hover{
+    transition: 0.5s;
+    color: rgb(255, 255, 255);
+    box-shadow: 0px 10px 10px rgb(59, 59, 59);
+}
+#btn{
+    z-index: 999;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#cir1{
+    /* animation: cir1 2s ease-in-out;
+    animation-play-state: paused; */
+    width: 300px;
+    height: 300px;
+    background-color: rgb(205, 51, 213);
+    border-radius: 50%;
+    filter: blur(70px);
+    position: absolute;
+    top: 40%;
+    margin-left: 25%;
+    /* margin-bottom: 40%; */
+}
+.cir1{
+    animation: cir1 5s ease-in-out infinite;
+    animation-play-state: running;
+}
+@keyframes cir1 {
+    0%{
+        top: 40%;
+    }
+
+    50%{
+        top:20%;
+    }
+}
+.cir2{
+    animation: cir2 5s ease-in-out infinite;
+}
+@keyframes cir2 {
+    0%{
+        top: 20%;
+    }
+    50%{
+        top:40%;
+    }
+}
+#cir2{
+    width: 300px;
+    height: 300px;
+    background-color: rgb(110, 29, 160);
+    border-radius: 50%;
+    filter: blur(70px);
+    position: absolute;
+    top: 20%;
+    margin-left: 55%;
+    /* margin-bottom: 40%; */
+}
+
+@media (max-width:800px) {
+    body{
+        margin: 0;
+        align-items: center;
+        justify-content: center;
+        background-color: rgb(64, 64, 64);
+    }
+    #first{
+        width: 100%;
+        height: 100dvh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #form{
+        animation: loder 2s;
+        position: absolute;
+        margin:0;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        font-size: 20px;
+        width: 70%;
+    }
+    #form #input1{
+        width: 80%;
+        height: 30px;
+        padding: 0px 20px;
+        font-size: 20px;
+        background: rgb(197, 197, 197,0.4);
+        backdrop-filter: blur(10px);
+        opacity: 0.5;
+        border:none;
+        margin-bottom: 20px;
+    }
+    #input2{
+        width: 70%;
+        height: 30px;
+        padding: 0px 20px;
+        font-size: 20px;
+    }
+    #btn{
+        margin: auto 10%;
+    }
+    #login{
+        margin: 10px auto;
+    }
+    #sign{
+        background-color: rgb(107, 0, 214);
+    }
+    #cir1{
+        width: 200px;
+        height: 200px;
+        top: 400px;
+        margin-left: 100px ;
+        background-color: rgb(255, 111, 233);
+
+    }
+    .cir1{
+        animation: cir1 5s ease-in-out infinite;
+        animation-play-state: running;
+    }
+    @keyframes cir1 {
+        0%{
+            top: 400px;
+        }
+    
+        50%{
+            top:100px;
+        }
+    }
+    #cir2{
+        width: 200px;
+        height: 200px;
+        top: 100px;
+        margin-left: 100px ;
+        background-color: rgb(200, 112, 255);
+
+    }
+    .cir2{
+        animation: cir2 5s ease-in-out infinite;
+    }
+    @keyframes cir2 {
+        0%{
+            top: 100px;
+        }
+        50%{
+            top:400px;
+        }
+    }
+    .pass{
+        width: 95%;
+
+        height: 30px;
+    }
+}

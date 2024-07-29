@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/chats.css">
+    <!-- icon link -->
+    <script src="https://kit.fontawesome.com/8625ac6713.js" crossorigin="anonymous"></script>
+    <!-- fonts link -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"> -->
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+        // const userId = <%= user._id %>;
+        // var socket = io('/user-namespace',{
+        //     auth:{
+        //         token: userId
+        //     }
+        // });
+        // var socket = io.connect('http://localhost:3000');
+
+        // socket.on('connect', function () {
+        //     console.log('Client has connected to the server!');
+        // });
+
+        // socket.on('disconnect', function(){
+        //     console.log('Client has disconnected to the sercer!');
+        // })
+        // socket.on('news', function (data) {
+        //     $("#iomsg").html(data);
+        //     socket.emit('newsresponse', 'this is news response');
+        // });
+    </script>
+
+    <title>Baat cheet</title>
+</head>
+
+<body>
+    <div id="div">
+        <div id="sidebar">
+            <div id="top-nav">
+
+                <span>Baat-Cheet</span>
+                <i class="fa-solid fa-gear setting"></i>
+                <div id="ul" class="ul">
+                    <a id="profile-btn" href="/profile">Profile</a>
+                    <a id="log-btn" href="/logout">Log out</a>
+                    <button id="theme-btn">Theme</button>
+                    <div id="ul2">
+                        <button id="dark-btn"></button>
+                    </div>
+                </div>
+            </div>
+            <div id="user-profile" sender_id="<%= user._id %>">
+                <% if(user.image){ %>
+                    <img src="<%= user.image %>" alt="">
+                    <% } %>
+                        <% if(!user.image){ %>
+                            <img src="/images/user.jpg">
+                            <% } %>
+                                <span id="user-name">
+                                    <%= user.username %>
+                                </span>
+                                <div id="search-user">
+                                    <input type="search" placeholder="search friends" id="search">
+                                </div>
+
+            </div>
+            <div id="masg-req">
+                <span id="msg">massages</span>
+                <br>
+                <span type="button" id="request">request</span>
+            </div>
+
+            <div id="act-user-box">
+                <div id="chats">
+                    <% if(user.friends && user.friends.length> 0){ %>
+                        <% user.friends.forEach(currUser=> { %>
+                            <% if(user.username !=currUser.username){ %>
+                                <div id="display-user" user_id=<%=currUser._id %>>
+                                    <img src="<%= currUser.image %>" alt="">
+                                    <span id="user-name">
+                                        <%= currUser.username %>
+                                    </span>
+                                </div>
+                                <% } %>
+                                    <% }); %>
+                                        <% } %>
+                </div>
+                <div id="requests">
+                    <h5>request box</h5>
+
+                    <% if(user.friendRequests && (user.friendRequests.length> 0)){ %>
+                        <% user.friendRequests.forEach(request=> { %>
+                            <div id="display-user" request_id=<%=request._id %>>
+                                <img src="<%= request.sender_id.image %>" alt="">
+                                <div style="display: flex; flex-direction: column;">
+                                    <p id="user-name">
+                                        <%= request.sender_id.username %>
+                                    </p>
+                                    <div style="display: flex; flex-direction: row; gap: 2;">
+                                        <button id="accept"
+                                            onclick="acceptReject('accepted', '<%= request._id%>')">accept</button>
+                                        <button id="reject"
+                                            onclick="acceptReject('rejected', '<%= request._id%>')">reject</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <% }); %>
+                                <% } %>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- -----------mag box------------- -->
+        <div id="main-box" class="main-box">
+
+            <div id="head">
+                <div id="msg-box-name">
+                    <% if(user.image){ %>
+                        <img src="<%= user.image %>" alt="" id="cur-user-img">
+                        <% } %>
+                            <% if(!user.image){ %>
+                                <img src="/images/user.jpg">
+                                <% } %>
+                                    <span id="cur-user-uname">
+                                        <%= user.username %>
+                                    </span>
+                </div>
+            </div>
+            <div id="msg-box">
+                <div class="cir1"></div>
+                <div class="cir2"></div>
+                <!-- <div class="our-messages">
+                    <span class="message">Hi</span>
+                </div>
+                <div class="distance-user-msg">
+                    <span class="message">Hi</span>
+                </div> -->
+            </div>
+
+            <div id="footer">
+                <form id="message-form">
+                    <input type="text" placeholder="Type something" name="message" id="message">
+                    <button type="submit">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="/javascripts/chats.js"></script>
+    <!-- <script>
+        const userId = '<%= user._id %>';
+        var socket = io('/user-namespace', {
+            auth: {
+                token: '<%= user._id %>'
+            }
+        });
+    </script> -->
+    <!-- <script>
+        var socket = io('/user-namespace');
+        const receiver_id = document.querySelector('#display-user').getAttribute('user_id');
+        const sender_id = document.querySelector('#user-profile').getAttribute('sender_id');
+
+        socket.on('loadNewChat', (data) => {
+            if (sender_id == data.receiver_id && receiver_id == data.sender_id) {
+
+                const html = `
+                    <div class="distance-user-msgs">
+                    <span class="message">${data.message}</span>
+                    </div>`;
+
+                document.querySelector('#msg-box').innerHTML += html;
+            }
+        })
+    </script> -->
+    <!-- 
+    <script>
+        const usernames = document.querySelectorAll('#display-user #user-name');
+        const users = document.querySelectorAll('#display-user');
+        document.querySelector('#search').addEventListener('input', function (event) {
+            const term = event.target.value.toLowerCase();
+        //     usernames.filter(name => {
+        //         if (!name.toLowerCase().includes(term)) {
+        //             name.outerHTML.style.display = 'none';
+        //         }
+        //     })
+        
+        usernames.forEach(elem=>{
+            if(!(elem.textContent).includes(term)){
+                // elem.classList.add('none');
+                // elem.parentElement.classList.add('none');
+                elem.parentElement.style.display = 'none';
+                // elem.classList.add('none');
+                // console.log(elem)
+            }
+            else{
+                // elem.parentElement.classList.remove('none');
+                elem.parentElement.style.display = 'flex';
+            }
+        })
+    })
+    // console.log(users[0].innerHTML);
+    </script> -->
+</body>
+
+</html>
