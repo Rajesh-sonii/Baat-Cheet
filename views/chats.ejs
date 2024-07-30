@@ -46,8 +46,10 @@
     <div id="div">
         <div id="sidebar">
             <div id="top-nav">
-
-                <span>Baat-Cheet</span>
+                <div id="logo">
+                    <img src="/images/logo.png" alt="logo">
+                    <span>Baat-Cheet</span>
+                </div>
                 <i class="fa-solid fa-gear setting"></i>
                 <div id="ul" class="ul">
                     <a id="profile-btn" href="/profile">Profile</a>
@@ -59,18 +61,51 @@
                 </div>
             </div>
             <div id="user-profile" sender_id="<%= user._id %>">
-                <% if(user.image){ %>
-                    <img src="<%= user.image %>" alt="">
-                    <% } %>
-                        <% if(!user.image){ %>
-                            <img src="/images/user.jpg">
-                            <% } %>
-                                <span id="user-name">
-                                    <%= user.username %>
-                                </span>
-                                <div id="search-user">
-                                    <input type="search" placeholder="search friends" id="search">
-                                </div>
+                <div id="main-user">
+                    <% if(user.image){ %>
+                        <img src="<%= user.image %>" alt="">
+                        <% } %>
+                            <% if(!user.image){ %>
+                                <img src="/images/user.jpg">
+                                <% } %>
+                                    <span id="user-name">
+                                        <%= user.username %>
+                                    </span>
+                </div>
+
+                <input id="input" type="search" placeholder="search friends" id="search">
+
+                <div id="search-friends">
+                    <div class="searched-user">
+                        <div class="send-request">
+                            <img src="img/user.jpg" alt="">
+                            <span id="user-name">user name</span>
+                        </div>
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                    <div class="searched-user">
+                        <div class="send-request">
+                            <img src="img/user.jpg" alt="">
+                            <span id="user-name">user name</span>
+                        </div>
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                    <div class="searched-user">
+                        <div class="send-request">
+                            <img src="img/user.jpg" alt="">
+                            <span id="user-name">user name</span>
+                        </div>
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                    <div class="searched-user">
+                        <div class="send-request">
+                            <img src="img/user.jpg" alt="">
+                            <span id="user-name">user name</span>
+                        </div>
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                </div>
+
 
             </div>
             <div id="masg-req">
@@ -95,23 +130,22 @@
                                         <% } %>
                 </div>
                 <div id="requests">
-                    <h5>request box</h5>
-
                     <% if(user.friendRequests && (user.friendRequests.length> 0)){ %>
                         <% user.friendRequests.forEach(request=> { %>
-                            <div id="display-user" request_id=<%=request._id %>>
-                                <img src="<%= request.sender_id.image %>" alt="">
-                                <div style="display: flex; flex-direction: column;">
-                                    <p id="user-name">
+                            <div class="friends-req" id="display-user" request_id=<%=request._id %>>
+                                <div class="pending-req">
+                                    <img src="<%= request.sender_id.image %>" alt="">
+                                    <sapn id="user-name">
                                         <%= request.sender_id.username %>
-                                    </p>
-                                    <div style="display: flex; flex-direction: row; gap: 2;">
-                                        <button id="accept"
-                                            onclick="acceptReject('accepted', '<%= request._id%>')">accept</button>
-                                        <button id="reject"
-                                            onclick="acceptReject('rejected', '<%= request._id%>')">reject</button>
-                                    </div>
+                                    </sapn>
                                 </div>
+                                <div class="req-icon">
+                                    <i id="accept" onclick="acceptReject('accepted', '<%= request._id%>')"
+                                        class="fa-regular fa-circle-check"></i>
+                                    <i id="reject" onclick="acceptReject('rejected', '<%= request._id%>')"
+                                        class="fa-regular fa-circle-xmark"></i>
+                                </div>
+
                             </div>
                             <% }); %>
                                 <% } %>
@@ -135,16 +169,93 @@
                                         <%= user.username %>
                                     </span>
                 </div>
+                <i class="fa-solid fa-right-from-bracket back-btn"></i>
+
             </div>
             <div id="msg-box">
                 <div class="cir1"></div>
                 <div class="cir2"></div>
-                <!-- <div class="our-messages">
-                    <span class="message">Hi</span>
+
+                <div class="massanger">
+                    <!-- <div id="incoming-msg">
+                        <div class="friends-input">
+                            <p>testing right now or checking its working or not</p>
+                        </div>
+                    </div>
+                    <div id="outgoing-msg">
+                        <div class="user-input">
+                            <p>kerle kerle test kerle fer bta diya chaale k</p>
+                        </div>
+                    </div>
+                    <div id="incoming-msg">
+                        <div class="friends-input">
+                            <p>testing right now or checking its working or not testing right now or checking its
+                                working or not testing right now or checking its working or not testing right now or
+                                checking its working or not</p>
+                        </div>
+                    </div>
+                    <div id="outgoing-msg">
+                        <div class="user-input">
+                            <p>kerle kerle test kerle fer bta diya chaale k</p>
+                        </div>
+                    </div>
+                    <div id="outgoing-msg">
+                        <div class="user-input">
+                            <p>hello</p>
+                        </div>
+                    </div>
+                    <div id="incoming-msg">
+                        <div class="friends-input">
+                            <p>testing right now or checking its working or not</p>
+                        </div>
+                    </div>
+                    <div id="outgoing-msg">
+                        <div class="user-input">
+                            <p>testing right now or checking its working or not testing right now or checking its
+                                working or not testing right now or checking its working or not testing right now or
+                                checking its working or not</p>
+                        </div>
+                    </div>
+                    <div id="incoming-msg">
+                        <div class="friends-input">
+                            <p>testing right now or checking its working or not</p>
+                        </div>
+                    </div>
+                    <div id="outgoing-msg">
+                        <div class="user-input">
+                            <p>kerle kerle test kerle fer bta diya chaale k</p>
+                        </div>
+                    </div>
+                    <div id="incoming-msg">
+                        <div class="friends-input">
+                            <p>testing right now or checking its working or not testing right now or checking its
+                                working or not testing right now or checking its working or not testing right now or
+                                checking its working or not</p>
+                        </div>
+                    </div>
+                    <div id="outgoing-msg">
+                        <div class="user-input">
+                            <p>kerle kerle test kerle fer bta diya chaale k</p>
+                        </div>
+                    </div>
+                    <div id="outgoing-msg">
+                        <div class="user-input">
+                            <p>hello</p>
+                        </div>
+                    </div>
+                    <div id="incoming-msg">
+                        <div class="friends-input">
+                            <p>testing right now or checking its working or not</p>
+                        </div>
+                    </div>
+                    <div id="outgoing-msg">
+                        <div class="user-input">
+                            <p>testing right now or checking its working or not testing right now or checking its
+                                working or not testing right now or checking its working or not testing right now or
+                                checking its working or not</p>
+                        </div>
+                    </div> -->
                 </div>
-                <div class="distance-user-msg">
-                    <span class="message">Hi</span>
-                </div> -->
             </div>
 
             <div id="footer">

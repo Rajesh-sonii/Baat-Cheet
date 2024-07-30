@@ -43,6 +43,8 @@ dark.addEventListener('click', function changingTheme1(params) {
 
 //funcion for showing massage box
 // let msg = document.getElementById('display-user')
+let msgbox = document.querySelector('.massanger');
+
 const sender_id = document.querySelector('#user-profile').getAttribute('sender_id');
 let receiver_id;
 let msg = document.querySelectorAll('#display-user')
@@ -60,7 +62,6 @@ msg.forEach(single => {
         // }
 
         document.querySelector('#msg-box-name').innerHTML = single.innerHTML;
-        let msgbox = document.querySelector('#msg-box');
         msgbox.innerHTML = "";
 
         receiver_id = single.getAttribute('user_id');
@@ -88,6 +89,7 @@ msg.forEach(single => {
                             </div>
                         </div>`: ""}`
             })
+            msgbox.scrollTo(0, msgbox.scrollHeight)
         });
     })
 
@@ -118,7 +120,12 @@ msgBox.addEventListener('click', function () {
         reqBox.style.display = 'none'
     }
 })
-
+//function for back button
+let backBtn = document.querySelector('.back-btn')
+backBtn.addEventListener('click', function (params) {
+    let msgBox = document.getElementById('main-box')
+    msgBox.style.display = 'none'
+})
 
 // // function for searching the user from the list of users 
 // document.querySelector('#currUser').addEventListener('onchange', ()=>{
@@ -132,41 +139,44 @@ var socket = io('/user-namespace');
 document.querySelector('#message-form').addEventListener('submit', async (event) => {
     event.preventDefault();
     const message = document.querySelector('#message').value;
+    let data;
+    // socket.emit('sendMessage', { message, sender_id, receiver_id });
 
-    socket.emit('sendMessage', { message, sender_id, receiver_id });
+    // socket.on('sentMessage', function (data) {
+    console.log(message)
+    console.log(sender_id)
+    console.log(receiver_id)
+    try {
+        const res = await fetch("http://localhost:3000/messages", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                message,
+                receiver_id,
+                sender_id
+            })
+        });
 
-    socket.on('sentMessage', function (data) {
-
-        // try {
-        //     const res = await fetch("http://localhost:3000/messages", {
-        //         method: "POST",
-        //         headers: { 'Content-Type': 'application/json' },
-        //         body: JSON.stringify({
-        //             message,
-        //             receiver_id,
-        //             sender_id
-        //         })
-        //     });
-
-        //     if (res) {
-        //         const data = await res.json()
-        const html = `
+        if (res) {
+            data = await res.json()
+            const html = `
                 <div id="outgoing-msg">
                     <div class="user-input">
                         <p>${data.message}</p>
                     </div>
                 </div>`;
 
-        document.querySelector('#msg-box').innerHTML += html;
+            document.querySelector('.massanger').innerHTML += html;
+            msgbox.scrollTo(0, msgbox.scrollHeight)
+        }
+    } catch (error) {
+        // console.log('something went wrong, please try again in some time');
+    }
 
-        // } catch (error) {
-        //     // console.log('something went wrong, please try again in some time');
-        // }
-
-        document.getElementById('message').value = '';
-        socket.emit('newChat', data);
-    })
-});
+    document.getElementById('message').value = '';
+    socket.emit('newChat', data);
+})
+// });
 
 socket.on('loadNewChat', (data) => {
     // console.log('systum ' + data);
@@ -177,7 +187,9 @@ socket.on('loadNewChat', (data) => {
         <span class="message">${data.message}</span>
         </div>`;
 
-        document.querySelector('#msg-box').innerHTML += html;
+        document.querySelector('.massanger').innerHTML += html;
+        msgbox.scrollTo(0, msgbox.scrollHeight)
+
     }
 })
 

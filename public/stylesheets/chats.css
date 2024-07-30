@@ -14,6 +14,8 @@ body {
     --third-color: rgb(0, 225, 255);
     --forth-color: black;
     --fifth-color: rgb(0, 152, 172);
+    --seach-f-color: rgba(255, 255, 255, 0.792);
+
 }
 
 .color1 {
@@ -22,11 +24,11 @@ body {
     --third-color: rgb(0, 4, 255);
     --forth-color: white;
     --fifth-color: rgb(6, 4, 44);
-
+    --seach-f-color: rgba(0, 0, 0, 0.769);
 }
 
 #div {
-    /* background-color: red ; */
+    background-color: red;
     width: auto;
     height: fit-content;
     display: flex;
@@ -45,12 +47,27 @@ body {
     font-size: clamp(30px, 40px, 40px);
     height: 10%;
     width: auto;
-    background-color: var(--fifth-color);
+    background-color: var(--secondary-color);
     color: var(--forth-color);
     display: flex;
     align-items: center;
     justify-content: space-between;
     box-shadow: -5px 0px 20px rgb(0, 91, 189);
+}
+
+#logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+#logo img {
+    margin-right: 10px;
+    width: 50px;
+    height: 50px;
+    aspect-ratio: 3/2;
+    object-fit: contain;
 }
 
 .setting {
@@ -86,7 +103,7 @@ body {
     top: 70px;
     margin-left: 20%;
     height: fit-content;
-    width: 7%;
+    width: auto;
     z-index: 999;
     background-color: rgb(108, 158, 209, 0.1);
     flex-direction: column;
@@ -127,7 +144,6 @@ body {
 #log-btn,
 #profile-btn {
     border-radius: 10px;
-    text-decoration: none;
     height: 40px;
     border: none;
     font-size: 25px;
@@ -146,21 +162,27 @@ body {
 #user-profile {
     height: 10%;
     display: flex;
-    padding: 10px 10px;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
 }
 
-#user-profile img {
+#main-user {
+    display: flex;
+    padding: 10px 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#main-user img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
     aspect-ratio: 3/2;
-    object-fit: cover;
-    background: white;
+    object-fit: contain;
+    background-color: white;
 }
 
-#user-profile #user-name {
+#main-user #user-name {
     margin-left: 10px;
     font-size: 25px;
     color: var(--forth-color);
@@ -173,7 +195,7 @@ body {
     justify-content: space-between;
     display: flex;
     color: var(--forth-color);
-
+    cursor: pointer;
 }
 
 #sidebar #act-user-box {
@@ -184,14 +206,53 @@ body {
 
 }
 
+/* ----------------------requestbox style------------------ */
+
 #requests {
     height: 100%;
     width: 30%;
-    background-color: red;
+    background: var(--primary-color);
     display: none;
+    flex-direction: column;
     position: absolute;
 }
 
+.friends-req {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px;
+
+}
+
+.friends-req img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    aspect-ratio: 3/2;
+    object-fit: contain;
+    background-color: white;
+}
+
+.pending-req #user-name {
+    margin-left: 10px;
+    font-size: 25px;
+    color: var(--forth-color);
+}
+
+.pending-req {
+    display: flex;
+    align-items: center;
+
+}
+
+.req-icon {
+    scale: 1.8;
+    color: var(--forth-color);
+    padding-right: 10px;
+}
+
+/* ----------------------massagebox style--------------------- */
 #chats {
     width: 100%;
     height: 100%;
@@ -204,16 +265,12 @@ body {
     align-items: center;
 }
 
-#display-user {
-    cursor: pointer;
-}
-
 #display-user img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
     aspect-ratio: 3/2;
-    object-fit: cover;
+    object-fit: contain;
     background-color: white;
 }
 
@@ -223,21 +280,71 @@ body {
     color: var(--forth-color);
 
 }
-.none{
-    display: none;
-    /* visibility: hidden; */
-}
 
-#search-user input {
-    width: 80%;
+#input {
+    width: 40%;
     height: 40px;
     border-radius: 20px;
-    margin: 0px 10%;
     color: var(--forth-color);
+    margin-right: 10px;
     padding: 10px;
     backdrop-filter: blur(10px);
     background: transparent;
     border-color: var(--forth-color);
+}
+
+.searched-user {
+    padding: 10px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--forth-color);
+}
+
+.searched-user i {
+    padding-right: 10px;
+    scale: 1.5;
+}
+
+#search-friends {
+    /* border: black solid; */
+    top: 20%;
+    position: absolute;
+    background: var(--third-color);
+    margin-left: 10%;
+    width: 20%;
+    height: auto;
+    border-radius: 10px;
+    /* right: 0; */
+    display: none;
+    flex-direction: column;
+    backdrop-filter: blur(5px);
+    box-shadow: -5px 5px 10px rgb(52, 52, 52);
+}
+
+.display-user {
+    justify-content: space-between;
+}
+
+.send-request {
+    display: flex;
+    align-items: center;
+
+}
+
+.send-request img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    aspect-ratio: 3/2;
+    object-fit: contain;
+    background: white;
+}
+
+.send-request span {
+    margin-left: 10px;
+    font-size: 25px;
+    color: var(--forth-color);
 }
 
 /* -----------------chating box----------- */
@@ -248,12 +355,10 @@ body {
     background: var(--third-color);
     border-bottom-right-radius: 100%;
     filter: blur(100px);
-    z-index: -1;
 }
 
 .cir2 {
-    z-index: -1;
-    margin-top: 20%;
+    margin-top: 15%;
     float: right;
     width: 200px;
     height: 200px;
@@ -263,29 +368,30 @@ body {
 }
 
 #main-box {
-    display: none;
     width: 70%;
     height: 100dvh;
-    /* display: flex; */
+    display: flex;
     flex-direction: column;
     background: var(--secondary-color);
 }
 
 #head {
     z-index: 999;
-    display: flex;
     align-items: center;
     width: 100%;
     height: 10%;
     background-color: var(--secondary-color);
 }
 
+#head i {
+    display: none;
+}
+
 #head div {
-    margin: 10px;
+    height: 80%;
     padding: 5px;
-    /* background-color: red; */
-    display: flex;
     align-items: center;
+    display: flex;
 }
 
 #head img {
@@ -293,7 +399,7 @@ body {
     height: 50px;
     border-radius: 50%;
     aspect-ratio: 3/2;
-    object-fit: cover;
+    object-fit: contain;
     background-color: white;
 }
 
@@ -304,8 +410,56 @@ body {
 }
 
 #msg-box {
-    height: 84%;
-    /* display: none; */
+    width: 100%;
+    height: 84dvh;
+}
+
+.massanger {
+    padding: 0px 20px;
+    margin: 5% 0px;
+    top: 0;
+    width: 66%;
+    height: 83vh;
+    position: absolute;
+    background-color: transparent;
+    overflow: scroll;
+}
+
+#incoming-msg {
+    display: inline-block;
+    max-width: 100%;
+    height: fit-content;
+}
+
+.massanger .friends-input p {
+    background-color: var(--third-color);
+    padding: 0px 5px;
+    border-radius: 10px;
+    width: fit-content;
+    max-width: 50%;
+    font-size: 20px;
+    color: white;
+    word-wrap: break-word;
+
+}
+#outgoing-msg {
+    display: inline-block;
+    width: 100%;
+    height: fit-content;
+}
+.massanger .user-input p {
+    /* display: inline; */
+    float: right;
+    font-size: 20px;
+    padding: 0 5px;
+    border-radius: 10px;
+    background-color: rgb(255, 255, 255);
+    width: fit-content;
+    height: auto;
+    max-width: 50%;
+    color: black;
+    word-wrap: break-word;
+
 }
 
 #footer {
@@ -314,35 +468,83 @@ body {
     margin: 0;
     width: 100%;
     height: 6%;
-    /* display: flex; */
-    /* align-items: center; */
 }
 
 #footer input {
     background: transparent;
     margin: 0;
     width: 90%;
-    height: 100%;
+    height: 80%;
     border: none;
     font-size: 20px;
     color: var(--forth-color);
 }
 
-#footer input:focus {
-    outline: none;
-    /* border: 1px solid black; */
-}
-
 #footer button {
-    /* width: 8.9%; */
-    margin: 0;
+    width: 8.9%;
     height: 100%;
-    border-radius: 20px 0 0 0;
+    border-radius: 20px;
     background: rgb(56, 55, 55);
     color: white;
 }
 
 
+@media (max-width: 1200px) {
+    #top-nav {
+        padding: 0px 10px;
+        font-size: clamp(30px, 40px, 40px);
+        height: 8%;
+        width: auto;
+        background-color: var(--secondary-color);
+        color: var(--forth-color);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: -5px 0px 20px rgb(0, 91, 189);
+    }
+
+    #top-nav span {
+        font-size: 30px;
+    }
+
+    #top-nav #ul {
+        border-radius: 10px;
+        padding: 10px;
+        font-size: 20px;
+        float: right;
+        color: var(--forth-color);
+        position: absolute;
+        top: 80px;
+        margin-left: 17.5%;
+        box-shadow: -2px 2px 5px rgb(53, 53, 53);
+    }
+
+    #footer {
+        background: var(--secondary-color);
+        z-index: 999;
+        margin: 0;
+        width: 100%;
+        height: 6%;
+    }
+
+    #footer input {
+        background: transparent;
+        margin: 0;
+        width: 83.5%;
+        height: 80%;
+        border: none;
+        font-size: 20px;
+        color: var(--forth-color);
+    }
+
+    #footer button {
+        width: 15%;
+        height: 100%;
+        border-radius: 20px;
+        background: rgb(56, 55, 55);
+        color: white;
+    }
+}
 
 @media(max-width: 700px) {
     body {
@@ -351,7 +553,7 @@ body {
     }
 
     #div {
-        /* background-color: red ; */
+        background-color: red;
         width: auto;
         height: auto;
         overflow: hidden;
@@ -380,6 +582,13 @@ body {
         font-size: 30px;
     }
 
+    #logo img {
+        margin-right: 10px;
+        width: 40px;
+        height: 40px;
+
+    }
+
     .setting {
         margin-left: auto;
         height: fit-content;
@@ -395,12 +604,13 @@ body {
         height: fit-content;
         width: auto;
         box-shadow: none;
+        box-shadow: 0px 5px 10px rgb(43, 43, 43);
     }
 
     #requests {
-        height: 76%;
+        height: 74dvh;
         width: 100%;
-        background-color: red;
+        /* border: red solid; */
     }
 
     #chats {
@@ -413,7 +623,7 @@ body {
     }
 
     #user-profile img {
-        width: 40px;
+        width: 50px;
         border-radius: 50%;
     }
 
@@ -423,22 +633,111 @@ body {
 
     }
 
+    #search-friends {
+        /* border: black solid; */
+        top: 20%;
+        position: absolute;
+        background: var(--seach-f-color);
+        width: 100%;
+        margin-left: 0px;
+
+    }
+
     /* -------------main div-------------- */
     #main-box {
         z-index: 999;
         width: 100%;
         height: 100dvh;
         background: var(--secondary-color);
-        position: absolute;
+        position: fixed;
         display: none;
+
     }
 
     #head {
+        justify-content: space-between;
+        display: flex;
         z-index: 999;
         align-items: center;
         width: 100%;
-        height: auto;
+        height: 8%;
         background-color: var(--primary-color);
+    }
+
+    #head i {
+        display: flex;
+        padding-right: 10px;
+        scale: 1.2;
+        color: var(--forth-color);
+        opacity: 0.5;
+    }
+
+    #msg-box-name img {
+        width: 35px;
+        height: 35px;
+    }
+
+    #msg-box-name span {
+        font-size: 20px;
+    }
+
+    #msg-box {
+        height: 86dvh;
+    }
+
+    .massanger {
+        /* margin: 20px; */
+        padding: 0px 20px;
+        margin-top: 18%;
+        top: 0;
+        width: 90%;
+        height: 80dvh;
+        position: fixed;
+        background-color: transparent;
+        overflow: scroll;
+
+    }
+
+    #incoming-msg {
+        display: inline-block;
+        width: 100%;
+        max-height: fit-content;
+    }
+
+    .massanger .friends-input p {
+        background-color: var(--third-color);
+        border-radius: 10px;
+        width: fit-content;
+        max-width: 80%;
+        height: 0%;
+        font-size: 15px;
+        color: white;
+        word-wrap: break-word;
+        padding: 10px;
+        margin: 2px 0px;
+    }
+
+    #outgoing-msg {
+        display: inline-block;
+        max-width: 100%;
+        /* margin-right: 10px; */
+        max-height: fit-content;
+
+    }
+
+    .massanger .user-input p {
+        float: right;
+        font-size: 15px;
+        padding: 10px;
+        border-radius: 10px;
+        background-color: rgb(255, 255, 255);
+        width: fit-content;
+        max-width: 80%;
+        height: 0%;
+        color: black;
+        word-wrap: break-word;
+        margin: 2px 0px;
+
     }
 
     #footer input {
@@ -452,27 +751,4 @@ body {
         height: 40px;
     }
 
-}
-
-.our-messages {
-    text-align: right;
-    margin: 20px;
-    /* background-color: aqua;
-    padding: 10px;
-    border-radius: 20px; */
-}
-
-.distance-user-msg {
-    text-align: left;
-    margin: 20px;
-    /* background-color: aqua;
-    padding: 10px;
-    border-radius: 20px; */
-}
-
-.message {
-    /* margin: 200px; */
-    background-color: aqua;
-    padding: 10px;
-    border-radius: 50%;
 }

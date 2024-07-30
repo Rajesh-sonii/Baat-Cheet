@@ -71,11 +71,11 @@ router.get('/searchfriend', isLoggedIn, async function (req, res) {
 })
 
 // sending a friend request to a user
-router.get('/makefriend', isLoggedIn, async function (req, res, next) {
+router.get('/makefriend', async function (req, res, next) {
 
   const { receiver_id } = req.body;
-  const currUser = req.express.session.user;
-  // const currUser = "66a3e9d2924cfc2bbdb21e80";
+  // const currUser = req.express.session.user;
+  const currUser = "66a8b10ced2ff17ea7022a3c";
 
   const check_sender = await userSchema.findOne({ _id: currUser });
   if (!check_sender) {
@@ -133,13 +133,13 @@ router.post('/checkoutRequest', isLoggedIn, async function (req, res) {
 })
 
 // sending a message
-// router.post('/messages', isLoggedIn, async function (req, res, next) {
-//   const { sender_id, receiver_id, message } = req.body;
-//   const newMessage = await messageSchema.create({
-//     sender_id, receiver_id, message
-//   });
-//   res.send(newMessage);
-// });
+router.post('/messages', isLoggedIn, async function (req, res, next) {
+  const { sender_id, receiver_id, message } = req.body;
+  const newMessage = await messageSchema.create({
+    sender_id, receiver_id, message
+  });
+  res.send(newMessage);
+});
 
 // uploading a profile photo from the available avatar options 
 router.post('/upload-pic', isLoggedIn, async function (req, res) {
