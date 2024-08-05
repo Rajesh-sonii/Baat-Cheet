@@ -100,7 +100,7 @@ a{
     border-radius: 20px;
     color: gray;
     border: none;
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(52, 52, 52,);
     backdrop-filter: blur(10px);
 }
 #login:hover{
@@ -214,25 +214,29 @@ a{
         margin-bottom: 20px;
     }
     #input2{
-        width: 70%;
+        width: 65%;
         height: 30px;
         padding: 0px 20px;
         font-size: 20px;
+        margin-right: 3%;
     }
     #btn{
-        margin: auto 10%;
+        /* margin: auto 10%; */
     }
     #login{
-        margin: 10px auto;
+        /* margin: 5px auto; */
+        scale: 0.9;
+        color: white;
     }
     #sign{
+        scale: 0.9;
         background-color: rgb(107, 0, 214);
     }
     #cir1{
         width: 200px;
         height: 200px;
-        top: 400px;
-        margin-left: 100px ;
+        top: 50%;
+        margin-left: 30% ;
         background-color: rgb(255, 111, 233);
 
     }
@@ -242,18 +246,18 @@ a{
     }
     @keyframes cir1 {
         0%{
-            top: 400px;
+            top: 50%;
         }
     
         50%{
-            top:100px;
+            top:30%;
         }
     }
     #cir2{
         width: 200px;
         height: 200px;
-        top: 100px;
-        margin-left: 100px ;
+        top: 30%;
+        margin-left: 30% ;
         background-color: rgb(200, 112, 255);
 
     }
@@ -262,10 +266,10 @@ a{
     }
     @keyframes cir2 {
         0%{
-            top: 100px;
+            top: 30%;
         }
         50%{
-            top:400px;
+            top:50%;
         }
     }
     .pass{

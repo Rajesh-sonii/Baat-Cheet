@@ -6,11 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/stylesheets/chats.css">
     <!-- icon link -->
+    <link rel="icon" href="/images/logo.png">
     <script src="https://kit.fontawesome.com/8625ac6713.js" crossorigin="anonymous"></script>
     <!-- fonts link -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lobster&family=Martel:wght@200;300;400;600;700;800;900&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"> -->
@@ -52,8 +54,8 @@
                 </div>
                 <i class="fa-solid fa-gear setting"></i>
                 <div id="ul" class="ul">
-                    <a id="profile-btn" href="/profile">Profile</a>
-                    <a id="log-btn" href="/logout">Log out</a>
+                    <button id="profile-btn" onclick="window.location.href='/profile'">Profile</button>
+                    <button id="log-btn"  onclick="window.location.href='/logout'">Log out</button>
                     <button id="theme-btn">Theme</button>
                     <div id="ul2">
                         <button id="dark-btn"></button>
@@ -78,32 +80,15 @@
                 <div id="search-friends">
                     <div class="searched-user">
                         <div class="send-request">
-                            <img src="img/user.jpg" alt="">
+                            <img src="/images/user.jpg" alt="">
                             <span id="user-name">user name</span>
                         </div>
-                        <i class="fa-solid fa-user-plus"></i>
-                    </div>
-                    <div class="searched-user">
-                        <div class="send-request">
-                            <img src="img/user.jpg" alt="">
-                            <span id="user-name">user name</span>
+                        <div>
+                            <i class="fa-solid fa-user-plus " id="follow"></i>
+                            <i class="fa-solid fa-user-check " id="following"></i>
                         </div>
-                        <i class="fa-solid fa-user-plus"></i>
                     </div>
-                    <div class="searched-user">
-                        <div class="send-request">
-                            <img src="img/user.jpg" alt="">
-                            <span id="user-name">user name</span>
-                        </div>
-                        <i class="fa-solid fa-user-plus"></i>
-                    </div>
-                    <div class="searched-user">
-                        <div class="send-request">
-                            <img src="img/user.jpg" alt="">
-                            <span id="user-name">user name</span>
-                        </div>
-                        <i class="fa-solid fa-user-plus"></i>
-                    </div>
+
                 </div>
 
 
@@ -119,7 +104,7 @@
                     <% if(user.friends && user.friends.length> 0){ %>
                         <% user.friends.forEach(currUser=> { %>
                             <% if(user.username !=currUser.username){ %>
-                                <div id="display-user" user_id=<%=currUser._id %>>
+                                <div class="user-hide-screen" id="display-user" user_id=<%=currUser._id %>>
                                     <img src="<%= currUser.image %>" alt="">
                                     <span id="user-name">
                                         <%= currUser.username %>
@@ -130,145 +115,212 @@
                                         <% } %>
                 </div>
                 <div id="requests">
-                    <% if(user.friendRequests && (user.friendRequests.length> 0)){ %>
-                        <% user.friendRequests.forEach(request=> { %>
-                            <div class="friends-req" id="display-user" request_id=<%=request._id %>>
-                                <div class="pending-req">
-                                    <img src="<%= request.sender_id.image %>" alt="">
-                                    <sapn id="user-name">
-                                        <%= request.sender_id.username %>
-                                    </sapn>
+                    <div id="sent-recived">
+                        <i class="fa-solid fa-hourglass-end"></i>
+                    </div>
+                    <div id="sent-req">
+                        <div id="sent">
+                            <h3> Outgoing requests</h3>
+                            <div id="sent-request">
+                                <div class="searched-user">
+                                    <div class="send-request">
+                                        <img src="/images/user.jpg" alt="">
+                                        <span id="user-name">user name</span>
+                                    </div>
+                                    <h4>request sent sucessfully</h4>
                                 </div>
-                                <div class="req-icon">
-                                    <i id="accept" onclick="acceptReject('accepted', '<%= request._id%>')"
-                                        class="fa-regular fa-circle-check"></i>
-                                    <i id="reject" onclick="acceptReject('rejected', '<%= request._id%>')"
-                                        class="fa-regular fa-circle-xmark"></i>
-                                </div>
-
                             </div>
-                            <% }); %>
+                            <div id="sent-request">
+                                <% if(user.friendRequests && (user.friendRequests.length> 0)){ %>
+                                    <% user.friendRequests.forEach(request=> { %>
+                                        <div class="friends-req">
+                                            <div class="pending-req">
+                                                <img src="<%= request.sender_id.image %>" alt="">
+                                                <sapn id="user-name">
+                                                    <%= request.sender_id.username %>
+                                                </sapn>
+                                            </div>
+                                            <div class="req-icon" id="<%= request.sender_id.username %>">
+                                                <i id="accept"
+                                                    onclick="acceptReject('accepted', '<%= request._id%>', '<%= request.sender_id.username %>')"
+                                                    class="fa-regular fa-circle-check"></i>
+                                                <i id="reject"
+                                                    onclick="acceptReject('rejected', '<%= request._id%>', '<%= request.sender_id.username %>')"
+                                                    class="fa-regular fa-circle-xmark"></i>
+        
+                                            </div>
+                                            <div class="<%= request.sender_id.username %>" style="display: none;">
+                                                <p class="friends" style="display: none;" id="abc">you're friends now!</p>
+                                                <p class="rejected" style="display: none;">Rejected</p>
+                                            </div>
+                                        </div>
+                                        <% }); %>
+                                            <% } %>
+                                    </div>
+                        </div>    
+                            <div id="recived">
+                                <h3> Incoming requests</h3>
+
+                                <% if(user.friendRequests && (user.friendRequests.length> 0)){ %>
+                                    <% user.friendRequests.forEach(request=> { %>
+                                        <div class="friends-req" id="display-user" request_id=<%=request._id %>>
+                                            <div class="pending-req">
+                                                <img src="<%= request.sender_id.image %>" alt="">
+                                                <sapn id="user-name">
+                                                    <%= request.sender_id.username %>
+                                                </sapn>
+                                            </div>
+                                            <div class="req-icon">
+                                                <i id="accept" onclick="acceptReject('accepted', '<%= request._id%>')"
+                                                    class="fa-regular fa-circle-check"></i>
+                                                <i id="reject" onclick="acceptReject('rejected', '<%= request._id%>')"
+                                                    class="fa-regular fa-circle-xmark"></i>
+                                            </div>
+
+                                        </div>
+
+                                        <% }); %>
+                                            <% } %>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="mobi-search-box">
+                        <div id="mobi-search-input">
+                            <input id="mobi-input" type="text" placeholder="search-friends">
+                        </div>
+                        <div id="mobi-request-shower">
+                            <div id="search-friends">
+                                <div class="searched-user">
+                                    <div class="send-request">
+                                        <img src="/images/user.jpg" alt="">
+                                        <span id="user-name">user name</span>
+                                    </div>
+                                    <i class="fa-solid fa-user-plus" id="mobi-follow"></i>
+                                    <i class="fa-solid fa-user-check " id="mobi-following"></i>
+                                </div>
+                                <div class="searched-user">
+                                    <div class="send-request">
+                                        <img src="/images/user.jpg" alt="">
+                                        <span id="user-name">user name</span>
+                                    </div>
+                                    <i class="fa-solid fa-user-plus"></i>
+                                </div>
+                                <div class="searched-user">
+                                    <div class="send-request">
+                                        <img src="/images/user.jpg" alt="">
+                                        <span id="user-name">user name</span>
+                                    </div>
+                                    <i class="fa-solid fa-user-plus"></i>
+                                </div>
+                                <div class="searched-user">
+                                    <div class="send-request">
+                                        <img src="/images/user.jpg" alt="">
+                                        <span id="user-name">user name</span>
+                                    </div>
+                                    <i class="fa-solid fa-user-plus"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="profile-shower">
+                        <div id="naam-or-photo">
+                            <% if(user.image){ %>
+                                <img src="<%= user.image %>" alt="">
                                 <% } %>
+                                    <% if(!user.image){ %>
+                                        <img src="/images/user.jpg">
+                                        <% } %>
+                                            <span id="user-name">
+                                                <%= user.username %>
+                                            </span>
+                        </div>
+                        <div id="ul" class="ul">
+                            <button id="profile-btn" onclick="window.location.href='/profile'">Profile</button>
+                            <hr>
+                            <button id="theme-btn2">Theme</button>
+
+                            <div id="ul3">
+                                <button id="dark-btn2"></button>
+                            </div>
+                            <hr>
+                            <button id="log-btn" onclick="window.location.href='/logout'">Log out</button>
+                        </div>
+
+                    </div>
+                </div>
+                <footer>
+                    <div id="msg-req-search">
+                        <div id="msg-open">
+                            <i class="fa-solid fa-comment"></i>
+                            <div id="red-dot"></div>
+                        </div>
+                        <div id="req-open">
+                            <i class="fa-solid fa-user-group"></i>
+                            <div id="red-dot"></div>
+                        </div>
+                        <div id="search-open">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+
+                        </div>
+                        <div id="profile-update">
+                            <% if(user.image){ %>
+                                <img src="<%= user.image %>" alt="">
+                                <% } %>
+                                    <% if(!user.image){ %>
+                                        <img src="/images/user.jpg">
+                                        <% } %>
+
+                                            <!-- <i class="fa-regular fa-user"></i>                 -->
+                        </div>
+
+                    </div>
+            </div>
+            </footer>
+
+            <!-- -----------mag box------------- -->
+            <div id="default-main-box">
+                <span>start donig Baat cheet</span>
+            </div>
+            <div id="main-box" class="main-box">
+
+                <div id="head">
+                    <div id="msg-box-name">
+                        <% if(user.image){ %>
+                            <img src="<%= user.image %>" alt="" id="cur-user-img">
+                            <% } %>
+                                <% if(!user.image){ %>
+                                    <img src="/images/user.jpg">
+                                    <% } %>
+                                        <span id="cur-user-uname">
+                                            <%= user.username %>
+                                        </span>
+                    </div>
+                    <i class="fa-solid fa-right-from-bracket back-btn"></i>
+
+                </div>
+                <div id="msg-box">
+                    <div class="cir1"></div>
+                    <div class="cir2"></div>
+
+                    <div class="massanger">
+
+                    </div>
+                </div>
+
+                <div id="footer">
+                    <form id="message-form">
+                        <input type="text" placeholder="Type something" name="message" id="message">
+                        <button type="submit" id="text-button">Send</button>
+                        <div id="icon-send-button">
+                        <button type="submit" ><i class="fa-regular fa-paper-plane"></i></button>
+                    </div>
+                    </form>
                 </div>
             </div>
         </div>
 
-
-        <!-- -----------mag box------------- -->
-        <div id="main-box" class="main-box">
-
-            <div id="head">
-                <div id="msg-box-name">
-                    <% if(user.image){ %>
-                        <img src="<%= user.image %>" alt="" id="cur-user-img">
-                        <% } %>
-                            <% if(!user.image){ %>
-                                <img src="/images/user.jpg">
-                                <% } %>
-                                    <span id="cur-user-uname">
-                                        <%= user.username %>
-                                    </span>
-                </div>
-                <i class="fa-solid fa-right-from-bracket back-btn"></i>
-
-            </div>
-            <div id="msg-box">
-                <div class="cir1"></div>
-                <div class="cir2"></div>
-
-                <div class="massanger">
-                    <!-- <div id="incoming-msg">
-                        <div class="friends-input">
-                            <p>testing right now or checking its working or not</p>
-                        </div>
-                    </div>
-                    <div id="outgoing-msg">
-                        <div class="user-input">
-                            <p>kerle kerle test kerle fer bta diya chaale k</p>
-                        </div>
-                    </div>
-                    <div id="incoming-msg">
-                        <div class="friends-input">
-                            <p>testing right now or checking its working or not testing right now or checking its
-                                working or not testing right now or checking its working or not testing right now or
-                                checking its working or not</p>
-                        </div>
-                    </div>
-                    <div id="outgoing-msg">
-                        <div class="user-input">
-                            <p>kerle kerle test kerle fer bta diya chaale k</p>
-                        </div>
-                    </div>
-                    <div id="outgoing-msg">
-                        <div class="user-input">
-                            <p>hello</p>
-                        </div>
-                    </div>
-                    <div id="incoming-msg">
-                        <div class="friends-input">
-                            <p>testing right now or checking its working or not</p>
-                        </div>
-                    </div>
-                    <div id="outgoing-msg">
-                        <div class="user-input">
-                            <p>testing right now or checking its working or not testing right now or checking its
-                                working or not testing right now or checking its working or not testing right now or
-                                checking its working or not</p>
-                        </div>
-                    </div>
-                    <div id="incoming-msg">
-                        <div class="friends-input">
-                            <p>testing right now or checking its working or not</p>
-                        </div>
-                    </div>
-                    <div id="outgoing-msg">
-                        <div class="user-input">
-                            <p>kerle kerle test kerle fer bta diya chaale k</p>
-                        </div>
-                    </div>
-                    <div id="incoming-msg">
-                        <div class="friends-input">
-                            <p>testing right now or checking its working or not testing right now or checking its
-                                working or not testing right now or checking its working or not testing right now or
-                                checking its working or not</p>
-                        </div>
-                    </div>
-                    <div id="outgoing-msg">
-                        <div class="user-input">
-                            <p>kerle kerle test kerle fer bta diya chaale k</p>
-                        </div>
-                    </div>
-                    <div id="outgoing-msg">
-                        <div class="user-input">
-                            <p>hello</p>
-                        </div>
-                    </div>
-                    <div id="incoming-msg">
-                        <div class="friends-input">
-                            <p>testing right now or checking its working or not</p>
-                        </div>
-                    </div>
-                    <div id="outgoing-msg">
-                        <div class="user-input">
-                            <p>testing right now or checking its working or not testing right now or checking its
-                                working or not testing right now or checking its working or not testing right now or
-                                checking its working or not</p>
-                        </div>
-                    </div> -->
-                </div>
-            </div>
-
-            <div id="footer">
-                <form id="message-form">
-                    <input type="text" placeholder="Type something" name="message" id="message">
-                    <button type="submit">Send</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <script src="/javascripts/chats.js"></script>
-    <!-- <script>
+        <script src="/javascripts/chats.js"></script>
+        <!-- <script>
         const userId = '<%= user._id %>';
         var socket = io('/user-namespace', {
             auth: {
@@ -276,7 +328,7 @@
             }
         });
     </script> -->
-    <!-- <script>
+        <!-- <script>
         var socket = io('/user-namespace');
         const receiver_id = document.querySelector('#display-user').getAttribute('user_id');
         const sender_id = document.querySelector('#user-profile').getAttribute('sender_id');
@@ -293,7 +345,7 @@
             }
         })
     </script> -->
-    <!-- 
+        <!-- 
     <script>
         const usernames = document.querySelectorAll('#display-user #user-name');
         const users = document.querySelectorAll('#display-user');

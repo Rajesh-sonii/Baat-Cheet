@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/stylesheets/signup.css">
+    <link rel="stylesheet" href="/images/logo.png">
+    <script src="https://kit.fontawesome.com/8625ac6713.js" crossorigin="anonymous"></script>
     <title>Document</title>
 </head>
 
@@ -21,7 +23,11 @@
             <label>Email</label>
             <input id="input3" type="email" type="text" placeholder="Enter email" name="email" required>
             <label>Password</label>
-            <input id="input4" type="password" placeholder="Enter password" name="password" required>
+            <div class="pass">
+                <input id="input4" type="password" placeholder="Enter password" name="password" required>
+                <i id="hide" class="fa-solid fa-eye"></i>
+                <i id="show" class="fa-solid fa-eye-slash"></i>
+            </div>
             <div id="btn">
                 <button type="submit" id="login">Login</button>
                 <button id="sign">Creat</button>

@@ -230,23 +230,25 @@ i{
         margin-bottom: 20px;
     }
     #input4{
-        width: 75%;
+        width: 65%;
         height: 30px;
         font-size: 20px;
+        margin-right: 2%;
     }
     #btn{
         justify-content: center;
-        margin: auto 10%;
-        display: flex;
-        flex-direction: column;
+        /* margin: auto 10%; */
+        /* display: flex; */
+        /* flex-direction: column; */
     }
     #login{
         width: 70%;
-        margin: 10px auto;
+        /* margin: 10px auto; */
+        color: white;
     }
     #sign{
         width: 70%;
-        margin: 0px auto;
+        /* margin: 0px auto; */
 
         background-color: rgb(107, 0, 214);
     }
