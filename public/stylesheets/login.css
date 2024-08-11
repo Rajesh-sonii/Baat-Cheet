@@ -98,9 +98,9 @@ a{
     height: 40px;
     width:200px;
     border-radius: 20px;
-    color: gray;
     border: none;
-    background: rgba(255, 255, 255, 0.3);
+    color: rgb(90, 89, 89);
+    background: rgba(52, 52, 52,);
     backdrop-filter: blur(10px);
 }
 #login:hover{
@@ -115,12 +115,12 @@ a{
     border-radius: 20px;
     color: white;
     border: none;
-    background-color: gray;
+    background-color: rgba(140, 140, 140, 0.619);
 }
 #sign:hover{
     transition: 0.5s;
-    color: rgb(255, 255, 255);
-    box-shadow: 0px 10px 10px rgb(59, 59, 59);
+    color: rgb(0, 0, 0);
+    box-shadow: 0px 5px 10px rgb(59, 59, 59);
 }
 #btn{
     z-index: 999;
@@ -214,25 +214,29 @@ a{
         margin-bottom: 20px;
     }
     #input2{
-        width: 70%;
+        width: 65%;
         height: 30px;
         padding: 0px 20px;
         font-size: 20px;
+        margin-right: 3%;
     }
     #btn{
-        margin: auto 10%;
+        /* margin: auto 10%; */
     }
     #login{
-        margin: 10px auto;
+        /* margin: 5px auto; */
+        scale: 0.9;
+        color: rgb(90, 89, 89);
     }
     #sign{
+        scale: 0.9;
         background-color: rgb(107, 0, 214);
     }
     #cir1{
         width: 200px;
         height: 200px;
-        top: 400px;
-        margin-left: 100px ;
+        top: 50%;
+        margin-left: 30% ;
         background-color: rgb(255, 111, 233);
 
     }
@@ -242,18 +246,18 @@ a{
     }
     @keyframes cir1 {
         0%{
-            top: 400px;
+            top: 50%;
         }
     
         50%{
-            top:100px;
+            top:30%;
         }
     }
     #cir2{
         width: 200px;
         height: 200px;
-        top: 100px;
-        margin-left: 100px ;
+        top: 30%;
+        margin-left: 30% ;
         background-color: rgb(200, 112, 255);
 
     }
@@ -262,10 +266,10 @@ a{
     }
     @keyframes cir2 {
         0%{
-            top: 100px;
+            top: 30%;
         }
         50%{
-            top:400px;
+            top:50%;
         }
     }
     .pass{

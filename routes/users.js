@@ -32,7 +32,12 @@ const userSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'FriendRequests',
     default: [] 
-  }]
+  }],
+  blocked: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    default: []
+  }],
 },
   { timestamps: true }
 

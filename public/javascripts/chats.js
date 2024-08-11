@@ -1,24 +1,61 @@
 let ul = document.getElementById('ul')
 let ul2 = document.getElementById('ul2')
-
+let ul3 = document.getElementById('ul3')
+let blockButton = false;
+let blockdiv = document.querySelectorAll('#block-div')
 let setting = document.querySelector('.setting')
+
+window.addEventListener('resize', () => {
+    const windowWidth = window.innerWidth;
+    // const navigation = document.querySelector('.navigation');
+
+    if ((windowWidth > 1024) || (windowWidth < 1025)) {
+        window.location.reload();
+    }
+});
+
+
+document.body.addEventListener('click', ({ target }) => {
+    if ((!target.classList.contains('ul') &&
+        !target.classList.contains('setting') &&
+        !target.classList.contains('theme-btn') &&
+        !target.classList.contains('dark-btn')) &&
+        !target.classList.contains('display-user-column')) {
+        ul.style.display = 'none'
+        if (blockButton) {
+            blockdiv.forEach(single => {
+                // let d = single.style.display;
+                // if (single.style.display == 'flex') {
+                single.style.display = 'none';
+                // }
+            })
+            blockButton = false;
+        }
+    }
+})
+
 setting.addEventListener('click', function (params) {
 
     if (ul.style.display == 'none') {
         ul.style.display = 'flex'
-        ul.style.transition = '1s'
     }
     else {
         ul.style.display = 'none'
     }
 })
-// document.addEventListener('click', ({target}) =>{
-//     if(!){
-//         ul.style.display = 'none'
-//     }
-// })
-// function for flex display
 
+// // for submitting the input form of messages on enter pressed
+// const form = document.querySelector('#message'); // Select your form
+
+// form.addEventListener('keydown', (event) => {
+//   if (event.key === 'Enter') { // Check if the pressed key is 'Enter'
+//     event.preventDefault(); // Prevent the default form submission
+//     form.submit(); // Manually submit the form
+//   }
+// });
+
+
+// function for flex display
 let theme = document.getElementById('theme-btn')
 theme.addEventListener('click', function (params) {
     if (ul2.style.display == 'none') {
@@ -29,41 +66,123 @@ theme.addEventListener('click', function (params) {
         ul2.style.display = 'none'
     }
 })
+let themeIcon1 = document.querySelector('.fa-sun')
+let themeIcon2 = document.querySelector('.fa-moon')
+let theme2 = document.getElementById('theme-btn2')
+theme2.addEventListener('click', function (params) {
+    document.body.classList.toggle("color1")
+
+    if (themeIcon2.style.display == 'none' || themeIcon1.style.display == 'flex') {
+        themeIcon1.style.display = 'none'
+        themeIcon2.style.display = 'flex'
+    }
+    else {
+        themeIcon1.style.display = 'flex'
+        themeIcon2.style.display = 'none'
+    }
+})
 
 //function for change theme
 let text = document.createTextNode('dark')
 let dark = document.getElementById('dark-btn')
 dark.addEventListener('click', function changingTheme1(params) {
     document.body.classList.toggle("color1")
-    if (dark.innerText = "Dark") {
+    if (dark.innerText == "Dark") {
         dark.innerText = "Light"
     }
+    else {
+        dark.innerText = "Dark"
+    }
 })
+let dark2 = document.getElementById('dark-btn2')
+dark2.addEventListener('click', function changingTheme2(params) {
+    document.body.classList.toggle("color1")
+    if (dark.innerText == "Dark") {
+        dark.innerText = "Light"
+    }
+    else {
+        dark.innerText = "Dark"
+    }
+})
+// //function to display block when the user press and holds the display-user-column div
+// let blockdiv = document.querySelector('#block-div')
+// let chatDiv = document.querySelector('#display-user-column')
+// chatDiv.addEventListener('long-press', function () {
+//     blockdiv.style.display = "flex"
+// })
 
+
+let chatDiv = document.querySelectorAll('#display-user-column')
+for (let i = 0; i < chatDiv.length; i++) {
+    chatDiv[i].addEventListener('long-press', function () {
+        const bd = blockdiv[i];
+        // if (bd.style.display == 'flex') {
+        //     bd.style.display = 'none'
+        // }
+        // else {
+        bd.style.display = "flex"
+        blockButton = true;
+        // if (i > 0) {
+        //     blockdiv[i - 1].style.display = 'none';
+        // }
+        // }
+    })
+}
+// chatDiv.forEach(single => {
+//     single.addEventListener('long-press', function () {
+//         blockdiv.style.display = "flex"
+//     })
+// });
+
+//function foe showings friends in search
+// let search = document.querySelector('#input')
+// search.addEventListener('click', function (params) {
+//     let searchBox = document.getElementById('search-friends')
+// if (searchBox.style.display =='none') {
+//     searchBox.style.display='flex'
+// }
+// else{
+//     searchBox.style.display='none'
+// }
+// })
 
 //funcion for showing massage box
 // let msg = document.getElementById('display-user')
+let msgbox = document.querySelector('.massanger');
+
 const sender_id = document.querySelector('#user-profile').getAttribute('sender_id');
 let receiver_id;
 let msg = document.querySelectorAll('#display-user')
+// let msg = document.querySelectorAll('#display-user-column')
 msg.forEach(single => {
 
     single.addEventListener('click', function (params) {
         let mainBox = document.getElementById('main-box')
+        receiver_id = single.getAttribute('user_id');
         // const uname = document.querySelector('#cur-user-uname')
         // const img = document.querySelector('#cur-user-img')
         // if (msgBox.style.display == 'flex') {
         //     msgBox.style.display = 'none'
         // }
         // else {
+        // socket.on('loadNewChat', (data) => {
+        //     if (receiver_id == data.sender_id) {
+        //         console.log(receiver_id)
+        //         console.log(data.sender_id)
+        // for removing the red dot from the message box downside
+        document.querySelector('#msg-req-search #msg-open #red-dot').style.display = 'none';
+        //     }
+        // });
+
+
+        let defaultscreen = document.getElementById('default-main-box')
+        defaultscreen.style.display = "none"
         mainBox.style.display = 'flex'
         // }
 
         document.querySelector('#msg-box-name').innerHTML = single.innerHTML;
-        let msgbox = document.querySelector('#msg-box');
         msgbox.innerHTML = "";
 
-        receiver_id = single.getAttribute('user_id');
         // console.log(receiver_id);
         // console.log(sender_id);
 
@@ -88,6 +207,7 @@ msg.forEach(single => {
                             </div>
                         </div>`: ""}`
             })
+            msgbox.scrollTo(0, msgbox.scrollHeight)
         });
     })
 
@@ -97,106 +217,450 @@ let slide = document.getElementById('main-box')
 slide.addEventListener('slide right', function (params) {
     slide.style.display = "none"
 })
+//function for hide default screen
+// let defaultUser = document.getElementById('display-user')
+// defaultUser.addEventListener('click', function (params) {
+//     let defaultscreen = document.getElementById('default-main-box')
+//     defaultscreen.style.display = "none"
+// })
+//function for exchanging following icons
+// let follow = document.getElementById("follow")
+// let following = document.getElementById("following")
+// follow.addEventListener('click',function (params) {
+//     console.log("follower faknvlasmk");
+//     following.style.display = "flex"
+//     follow.style.display = "none"
+// })
+//function for recived sent box
+let sentRequest = document.getElementById("sent")
+let recivedRequest = document.getElementById("recived")
+let buttonSentRequest = document.getElementById("sent-recived")
+buttonSentRequest.addEventListener('click', function (params) {
+    if (sentRequest.style.display == "none" && recivedRequest.style.display == "flex") {
+        sentRequest.style.display = "flex"
+        recivedRequest.style.display = "none"
+        buttonSentRequest.style.rotate = '180deg'
+        buttonSentRequest.style.transition = '0.5s'
+    }
+    else {
+        console.log("sent")
+        sentRequest.style.display = "none"
+        recivedRequest.style.display = "flex"
+        buttonSentRequest.style.rotate = '0deg'
+        buttonSentRequest.style.transition = '0.5s'
+    }
 
+})
 
 //for showing request box
 let chat = document.getElementById('act-user-box')
-let reqBox = document.getElementById('requests')
 let req = document.getElementById('request')
 req.addEventListener('click', function () {
-    if (reqBox.style.display == 'none') {
-        reqBox.style.display = 'flex'
-    }
-    else {
-        reqBox.style.display = 'none'
-    }
-
+    reqBox.style.display = 'flex'
 })
+//function for desktop msgbox
+let reqBox = document.getElementById('requests')
 let msgBox = document.getElementById('msg')
 msgBox.addEventListener('click', function () {
-    if (reqBox.style.display == 'flex') {
-        reqBox.style.display = 'none'
+    reqBox.style.display = 'none'
+})
+//function for back button
+let backBtn = document.querySelector('.back-btn')
+backBtn.addEventListener('click', function (params) {
+    let msgBox = document.getElementById('main-box')
+    msgBox.style.display = 'none'
+})
+//function for shpwing chat box
+let chatsshow = document.getElementById("chats")
+
+let msgOpen = document.getElementById('msg-open')
+let reqOpen = document.getElementById('req-open')
+let mobiSearch = document.getElementById('search-open')
+let profile = document.getElementById('profile-update')
+let profilePanel = document.getElementById('profile-shower')
+let mobiSearchPanel = document.getElementById('mobi-search-box')
+let white = 1;
+//--------------------------functions for mobile devices-----------------------
+function bgRemover(white) {
+    switch (white) {
+        case 1:
+            msgOpen.classList.remove('transition');
+            break;
+        case 2:
+            reqOpen.classList.remove('transition');
+            break;
+        case 3:
+            mobiSearch.classList.remove('transition');
+            break;
+        case 4:
+            profile.classList.remove('transition');
+            break;
+        default:
+        // code block
+    }
+}
+
+
+// for showing the message tab
+msgOpen.addEventListener('click', function () {
+    reqBox.style.display = 'none'
+    chatsshow.style.display = "flex"
+    profilePanel.style.display = "none"
+    mobiSearchPanel.style.display = "none"
+
+    // msgOpen.style = 'background: white; transform: scaleX(0.1);'
+    if (white > 1) {
+        bgRemover(white);
+        white = 1;
+        msgOpen.classList.add('transition');
+    }
+    // msgOpen.style = 'background: white;'
+    // document.querySelector('#msg-open i').style = 'color: black;'
+})
+// for showing the requests tab
+reqOpen.addEventListener('click', function () {
+    reqBox.style.display = 'flex'
+    chatsshow.style.display = "none"
+    profilePanel.style.display = "none"
+    mobiSearchPanel.style.display = "none"
+
+    if (white != 2) {
+        bgRemover(white);
+        white = 2;
+        reqOpen.classList.add('transition');
+    }
+    // reqOpen.style = 'background: white';
+    // document.querySelector('#req-open i').style = 'color: black;'
+
+    // for hiding the red Dot from it
+    const redDot = document.querySelector('#msg-req-search #req-open #red-dot');
+    if (redDot.style.display == 'flex') {
+        redDot.style.display = 'none';
+    }
+})
+//function for mobile search bar
+// for showing the search tab
+mobiSearch.addEventListener('click', function (params) {
+    reqBox.style.display = 'none'
+    chatsshow.style.display = "none"
+    profilePanel.style.display = "none"
+    mobiSearchPanel.style.display = "flex"
+
+    // mobiSearch.style = 'background: white';
+    // document.querySelector('#search-open i').style = 'color: black;'
+    if (white != 3) {
+        bgRemover(white);
+        white = 3;
+        mobiSearch.classList.add('transition');
+    }
+})
+//functon for showing profile panel
+profile.addEventListener('click', function () {
+    reqBox.style.display = 'none'
+    chatsshow.style.display = "none"
+    profilePanel.style.display = "flex"
+    mobiSearchPanel.style.display = "none"
+
+    if (white != 4) {
+        bgRemover(white);
+        white = 4;
+        profile.classList.add('transition');
+    }
+})
+//function for exchanging mobile following icons
+// let mobifollow = document.getElementById("mobi-follow")
+// let mobifollowing = document.getElementById("mobi-following")
+// mobifollow.addEventListener('click',function (params) {
+//     console.log("follower faknvlasmk");
+//     mobifollowing.style.display = "flex"
+//     mobifollow.style.display = "none"
+// })
+
+//function for block user shower
+let blockBtn = document.querySelector("#block-user")
+let blockUserDiv = document.querySelector('#blocked-popup-back')
+blockBtn.addEventListener('click', function (params) {
+    blockUserDiv.style.display = "flex"
+})
+let blockBackBtn = document.querySelector('.block-back-btn')
+blockBackBtn.addEventListener('click', function (params) {
+    blockUserDiv.style.display = "none"
+})
+//function fo showing delete dispaly
+let deletebtn = document.querySelector('#delete-account')
+let deleteDiv = document.querySelector('#delete-popup-back')
+deletebtn.addEventListener('click', function (params) {
+    deleteDiv.style.display = "flex"
+})
+let deleteBackBtn = document.querySelector('#delete-back-btn')
+deleteBackBtn.addEventListener('click', function (params) {
+    deleteDiv.style.display = "none"
+
+})
+//function for setting profile ul
+let profileUl = document.querySelector('#profile-ul')
+let arrow = document.querySelector('#upword-downword #up-down');
+let settingBtn = document.querySelector('#upword-downword')
+settingBtn.addEventListener('click', function (params) {
+    if (profileUl.style.top == '-26dvh' || settingBtn.style.rotate == '180deg') {
+        profileUl.style.top = '0'
+        arrow.style.transform = 'rotate(0deg)'
+        settingBtn.style.transition = '0.5s'
+        profileUl.style.transition = '0.5s'
+    }
+    else {
+        profileUl.style.top = '-26dvh'
+        arrow.style.transform = 'rotate(180deg)'
+        settingBtn.style.transition = '0.5s'
+        profileUl.style.transition = '0.5s'
+        // settingBtn.style.transform = 'rotate("180deg")'
     }
 })
 
 
-// // function for searching the user from the list of users 
-// document.querySelector('#currUser').addEventListener('onchange', ()=>{
+// function for disabling the send message button
+// function changer(event) {
+const messageForm = document.querySelector('#message-form')
+const textArea = document.querySelector('#message')
+// textArea.onkeydown = (e) => {
+//     if (e.key === "Enter") {
+//         messageForm.submit();
+//     }
+// }
 
-// });
+// for disable/enable the send button
+textArea.addEventListener('input', (event) => {
+    const message = event.target.value.trim();
+    const sendbtn = document.querySelector('#text-button');
+    const sendbtnphone = document.querySelector('#icon-send-button button');
+    if (message.length <= 0 || message.split(' ').length <= 0) {
+        sendbtn.disabled = true;
+        sendbtnphone.disabled = true;
+    }
+    else {
+        sendbtn.disabled = false;
+        sendbtnphone.disabled = false;
+    }
+});
 
 // defining the namespace using socket.io 
 var socket = io('/user-namespace');
-// const receiver_id = document.querySelector('#display-user').getAttribute('user_id');
 
-document.querySelector('#message-form').addEventListener('submit', async (event) => {
+// handling what to do when a user sends a message
+messageForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const message = document.querySelector('#message').value;
+    let data;
 
-    socket.emit('sendMessage', { message, sender_id, receiver_id });
+    // if (message.length <= 0 || message.split(" ").length > 0) {
+    //     return;
+    // }
+    try {
+        const res = await fetch("http://localhost:3000/messages", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                message,
+                receiver_id,
+                sender_id
+            })
+        });
 
-    socket.on('sentMessage', function (data) {
-
-        // try {
-        //     const res = await fetch("http://localhost:3000/messages", {
-        //         method: "POST",
-        //         headers: { 'Content-Type': 'application/json' },
-        //         body: JSON.stringify({
-        //             message,
-        //             receiver_id,
-        //             sender_id
-        //         })
-        //     });
-
-        //     if (res) {
-        //         const data = await res.json()
-        const html = `
+        if (res) {
+            data = await res.json()
+            const html = `
                 <div id="outgoing-msg">
                     <div class="user-input">
                         <p>${data.message}</p>
                     </div>
                 </div>`;
 
-        document.querySelector('#msg-box').innerHTML += html;
+            document.querySelector('.massanger').innerHTML += html;
+            msgbox.scrollTo(0, msgbox.scrollHeight)
+        }
+    } catch (error) {
+        // console.log('something went wrong, please try again in some time');
+    }
 
-        // } catch (error) {
-        //     // console.log('something went wrong, please try again in some time');
-        // }
+    document.getElementById('message').value = '';
+    socket.emit('newChat', data);
+})
 
-        document.getElementById('message').value = '';
-        socket.emit('newChat', data);
-    })
-});
-
+// for chtching the event of getting a new message
 socket.on('loadNewChat', (data) => {
+    // for showing the red dot on the message box downside
+    document.querySelector('#msg-req-search #msg-open #red-dot').style.display = 'flex';
     // console.log('systum ' + data);
     if (sender_id == data.receiver_id && receiver_id == data.sender_id) {
 
         const html = `
-        <div class="distance-user-msg">
-        <span class="message">${data.message}</span>
-        </div>`;
+                <div id="incoming-msg">
+                    <div class="friends-input">
+                        <p>${data.message}</p>
+                    </div>
+                </div>`;
 
-        document.querySelector('#msg-box').innerHTML += html;
+        document.querySelector('.massanger').innerHTML += html;
+        msgbox.scrollTo(0, msgbox.scrollHeight)
+
     }
 })
 
+// using debounce function for fetching the data after the specified time
+function debounce(func, wait) {
+    let timeout;
+
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+
+        clearTimeout(timeout);
+        timeout = setTimeout(later,
+            wait);
+    };
+}
+
+// making a debounced api call after 1 second
+const debouncedSearch = debounce(async (value, container) => {
+    // Your API call logic here
+    const promise = await fetch(`http://localhost:3000/searchfriend?q=${value}`)
+    const res = await promise.json();
+
+    container.innerHTML = "";
+    let html = "";
+    if (res.length > 0) {
+
+        res.forEach((user) => {
+
+            html += `<div class="searched-user">
+                    <div class="send-request">
+                        <img src=${user.image} alt="">
+                        <span id="user-name">${user.username}</span>
+                    </div>
+                    <i class="fa-solid fa-user-plus" id="${user.username}" onclick="sendReq('${user._id}')"></i>
+                    <i class="fa-solid fa-user-check ${user.username}" id="following"></i>
+                 </div>`;
+        });
+    }
+    else {
+        let p = document.createElement('p');
+        p.classList.add('nothing');
+        p.textContent = "No new user found for the query!";
+        html = p.outerHTML;
+    }
+    container.innerHTML = html;
+
+}, 1000); // Adjust the delay as needed
 
 // searching for a user
-document.querySelector('#search').addEventListener('input', async function (event) {
-    // setTimeout(async () => {
-    const promise = await fetch(`http://localhost:3000/searchfriend?q=${event.target.value}`)
-    const res = await promise.json();
-    console.log(res);
-    // }, 2000);
+document.querySelector('#input').addEventListener('input', async function (event) {
+    const value = event.target.value;
+    let searchBox = document.getElementById('search-friends')
+    let container = document.querySelector('#search-friends');
+    if (value != "") {
+        searchBox.style.display = 'flex'
+
+        // making a debounced api call which will evaluate after 1 second 
+        debouncedSearch(value, container);
+
+    }
+    else {
+        searchBox.style.display = 'none'
+    }
 })
 
-document.querySelector('#appect');
-document.querySelector('#reject');
+// searching for a user in mobile-view
+document.querySelector('#mobi-input').addEventListener('input', async function (event) {
+    const value = event.target.value;
+    let container = document.querySelector('#mobi-request-shower #search-friends');
+    if (value != "") {
 
-async function acceptReject(status, id) {
+        // making a debounced api call which will evaluate after 1 second
+        debouncedSearch(value, container);
+    }
+    else {
+        container.innerHTML = "";
+    }
+})
+
+// handling the event to fire when the user clicks on the sendRequest button
+async function sendReq(receiver_id) {
+    const res = await fetch('http://localhost:3000/makefriend', {
+        method: "POST",
+        headers: { receiver_id }
+    })
+
+    const data = await res.json();
+    if (data) {
+        const follow = document.querySelector(`#${data.tusername}`)
+        // for changing the follow icon to following icon when the user clicks on it 
+        const following = document.querySelector(`.${data.tusername}`)
+        console.log(following);
+
+        following.style.display = "flex"
+        follow.style.display = "none"
+
+        socket.emit('requestSent', data);
+
+        const newReq = `<div class="friends-req">
+                            <div class="pending-req">
+                                <img src="${data.timage}" alt="">
+                                <sapn id="user-name">
+                                ${data.tusername}
+                                </sapn>
+                            </div>
+                            <div class="req-icon" id="${data.tusername}">
+                                <i id="cancelled"
+                                    onclick="cancelReq('${data.rid}', '${data.tusername}')"
+                                    class="fa-regular fa-circle-xmark"></i>
+                            </div>
+                            <div class="${data.tusername}" style="display: none;">
+                                <p class="cancelled" style="display: none;">Cancelled</p>
+                            </div>
+                        </div>`
+        document.querySelector('#sent-requests').innerHTML += newReq;
+    }
+}
+
+// for catching the event of sending a friend request to a user
+socket.on('sentFriendRequest', (data) => {
+    const newReq = `<div class="friends-req">
+                        <div class="pending-req">
+                            <img src="${data.image}" alt="">
+                            <sapn id="user-name">
+                                ${data.username}
+                            </sapn>
+                        </div>
+                        <div class="req-icon" id="${data.username}">
+                            <i id="accept"
+                                onclick="acceptReject('accepted', '${data.rid}', '${data.username}', '${data.image}')"
+                                class="fa-regular fa-circle-check"></i>
+                            <i id="reject"
+                                onclick="acceptReject('rejected', '${data.rid}', '${data.username}', '${data.image}')"
+                                class="fa-regular fa-circle-xmark"></i>
+
+                        </div>
+                        <div class="${data.username}" style="display: none;">
+                            <p class="friends" style="display: none;" id="abc">you're friends now!
+                            </p>
+                            <p class="rejected" style="display: none;">Rejected</p>
+                        </div>
+                    </div>`;
+
+    recivedRequest.innerHTML += newReq;
+
+    // for showing the red dot in the bottom
+    const redDot = document.querySelector('#msg-req-search #req-open #red-dot');
+    redDot.style.display = 'flex';
+})
+
+// function for acepting or rejecting the friend request
+async function acceptReject(status, id, uname) {
+
     if ((status == 'accepted' || status == 'rejected') && id != undefined) {
-
+        let data;
         try {
             const res = await fetch('http://localhost:3000/checkoutRequest',
                 {
@@ -208,14 +672,131 @@ async function acceptReject(status, id) {
                 });
 
             if (!res.ok) {
-                throw new Error('Network response was not ok');
+                return new Error('Network response was not ok');
             }
-
-            const json = await res.json();
-            console.log(json);
+            data = await res.json();
 
         } catch (error) {
-            console.error('Error:', error);
+            return console.error('Error:', error);
+        }
+
+        // updating the same elemnt on the frontend
+        const btns = document.querySelector(`#${data.tusername}`);
+        btns.style.display = 'none';
+        const txts = document.querySelector(`.${data.tusername}`);
+        txts.style.display = 'block';
+        if (status == 'accepted') {
+            document.querySelector(`.${data.tusername} .friends`).style.display = 'block';
+
+            const newFrnd = `<div id="display-user-column" data-long-press-delay="500" class="display-user-column">
+                                <div class="user-hide-screen" id="display-user" user_id="${data.tid}">
+                                    <img src="${data.timage}" alt="">
+                                    <span id="user-name">
+                                        ${data.tusername}
+                                    </span>
+                                </div>
+                                <div id="block-div" class="${data.tusername}">
+                                    <button onclick="block('${data.rid}', '${data.tusername}')">
+                                        <i class="fa-solid fa-user-slash"></i>
+                                        block
+                                    </button>
+                                </div>
+                            </div>`;
+
+            chatsshow.innerHTML += newFrnd;
+
+            socket.emit('accepted', data);
+        }
+        else {
+            document.querySelector(`.${uname} .rejected`).style.display = 'block';
         }
     }
+}
+
+// catching the event of getting a new friend request
+socket.on('newFriend', (data) => {
+    const newFrnd = `<div id="display-user-column" data-long-press-delay="500" class="display-user-column">
+                                <div class="user-hide-screen" id="display-user" user_id="${data.id}">
+                                    <img src="${data.image}" alt="">
+                                    <span id="user-name">
+                                        ${data.username}
+                                    </span>
+                                </div>
+                                <div id="block-div" class="${data.username}">
+                                    <button onclick="block('${data.rid}', '${data.username}')">
+                                        <i class="fa-solid fa-user-slash"></i>
+                                        block
+                                    </button>
+                                </div>
+                            </div>`;
+
+    chatsshow.innerHTML += newFrnd;
+})
+
+// function for cancelling the sent friendRequest
+async function cancelReq(id, uname) {
+
+    try {
+        const res = await fetch('http://localhost:3000/cancelRequest',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    request_id: id
+                }
+            });
+
+        if (!res.ok) {
+            return new Error('Network response was not ok');
+        }
+
+    } catch (error) {
+        return console.error('Error:', error);
+    }
+
+    // updating the same elemnt on the frontend
+    const btns = document.querySelector(`#${uname}`);
+    btns.style.display = 'none';
+
+    const txts = document.querySelector(`.${uname}`);
+    txts.style.display = 'block';
+
+    document.querySelector(`.${uname} .cancelled`).style.display = 'block';
+}
+
+// for showing the loggin-out screen when the user logs-out
+function logout() {
+    setTimeout(() => {
+        window.location.href = '/logout';
+    }, 1000);
+
+    document.querySelector('#logout-popup-back').style.display = 'flex';
+}
+
+// for blocking a friend
+function block(uid, uname) {
+
+    fetch('http://localhost:3000/block', {
+        method: 'POST',
+        headers: { "user_id": uid },
+    })
+        .then(res => {
+            if (res.ok) {
+                document.querySelector(`.${uname}`).textContent = 'blocked';
+            }
+        })
+}
+
+// for unblocking a friend
+function unblock(uid, uname) {
+
+    fetch('http://localhost:3000/unblock', {
+        method: 'POST',
+        headers: { "user_id": uid },
+    })
+        .then(res => {
+            if (res.ok) {
+                document.querySelector(`.${uname}`).textContent = 'unblocked';
+            }
+        })
 }

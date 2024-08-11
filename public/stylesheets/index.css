@@ -21,13 +21,14 @@ body{
 }
 
 h1{
-    font-family: "Great Vibes", cursive;
-  font-weight: 400;
+    font-family: "Martel", serif;
+    font-weight: 400;
   font-style: normal;
-    animation: ope 3s ease-in 1s backwards ;
+    animation: ope 2s ease-in 1s backwards ;
     height: 50px;
     opacity: 0;
 }
+
 @keyframes ope {
     0%{
 margin-top: 120px;

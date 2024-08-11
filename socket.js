@@ -25,13 +25,45 @@ usp.on('connection', async (socket) => {
         socket.emit('getChats', messages);
     })
 
-    socket.on('sendMessage', async function (data) {
-        const {sender_id, receiver_id, message} = data;
-        const newMessage = await messageSchema.create({
-            sender_id, receiver_id, message
-        });
+    socket.on('accepted', function (data) {
+        console.log(data);
+        socket.broadcast.emit('newFriend', data);
+    });
 
-        socket.emit('sentMessage', newMessage);
+    socket.on('requestSent', function (data) {
+        console.log(data);
+        socket.broadcast.emit('sentFriendRequest', data);
+    });
+
+    // socket.on('sendMessage', async function (data) {
+    //     const {sender_id, receiver_id, message} = data;
+    //     const newMessage = await messageSchema.create({
+    //         sender_id, receiver_id, message
+    //     });
+
+    //     socket.emit('sentMessage', newMessage);
+    // })
+
+    socket.on('accRejReq', async (data) => {
+        try {
+            const res = await fetch('http://localhost:3000/checkoutRequest',
+                {
+                    method: 'POST',
+                    body: JSON.stringify({ acceptReject: status, request_id: id }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+            if (!res.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            socket.broadcast.emit('newFriend', 'accepted');
+
+        } catch (error) {
+            console.error('Error:', error);
+        }
     })
 });
 

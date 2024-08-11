@@ -2,6 +2,8 @@ var express = require('express');
 const passport = require('passport');
 var router = express.Router();
 
+const mongoose = require('mongoose')
+const ObjectId = mongoose.Types.ObjectId;
 const upload = require('./multer')
 const userSchema = require('./users')
 const messageSchema = require('./messages');
@@ -33,51 +35,67 @@ router.get('/profile', isLoggedIn, async function (req, res, next) {
 
 // rendering the chat page
 router.get('/chat', isLoggedIn, async function (req, res, next) {
-  const user = await userSchema.findOne({ username: req.session.passport.user }).populate('friends', ['_id', 'username', 'image']).populate({ path: 'friendRequests', model: 'FriendRequests', populate: { path: 'sender_id', model: 'User' }, match: { status: 'pending' } }).populate({ path: 'sentRequests', model: 'FriendRequests', populate: { path: 'receiver_id', model: 'User' }, match: { status: 'pending' } });
-  console.log(user.friendRequests);
+  const user = await userSchema.findOne({ username: req.session.passport.user })
+    .populate('friends', ['_id', 'username', 'image'])
+    .populate({
+      path: 'friendRequests', model: 'FriendRequests',
+      populate: { path: 'sender_id', model: 'User' }, match: { status: 'pending' }
+    })
+    .populate({
+      path: 'sentRequests', model: 'FriendRequests',
+      populate: { path: 'receiver_id', model: 'User' }, match: { status: 'pending' }
+    })
+    .populate('blocked', ['_id', 'username', 'image']);
+
+  console.log(user);
   res.render('chats', { user });
 });
 
-// getting all the chats between two users
-// router.get('/getchats', isLoggedIn, async function (req, res) {
-//   var { receiver_id, sender_id } = req.headers;
-//   const messages = await messageSchema.find({ $or: [{ sender_id: receiver_id, receiver_id: sender_id }, { sender_id: sender_id, receiver_id: receiver_id }] });
-//   res.json(messages);
-// });
-
 // searching for a friend
 router.get('/searchfriend', isLoggedIn, async function (req, res) {
+  const { q } = req.query;
   try {
-    const { q } = req.query;
-    const user = await userSchema.findOne({ username: req.session.passport.user });
-    const users = await userSchema.find({ username: { $regex: q, $options: "i" } });
-    let newUsers = [];
-    for (i = 0; i < users.length; i++) {
-      for (j = 0; j < user.friends.length; j++) {
-        if (JSON.stringify(users[i]._id) != JSON.stringify(user.friends[j])){
-          console.log(user.friends[j]);
-          console.log(users[i]._id);
-          newUsers.push(users[i]); 
+    if (q.length > 0) {
+      const user = await userSchema.findOne({ username: req.session.passport.user })
+        .populate('friends', ['_id', 'username', 'image'])
+        .populate({
+          path: 'friendRequests', model: 'FriendRequests',
+          populate: { path: 'sender_id', model: 'User' }, match: { status: 'pending' }
+        })
+        .populate({
+          path: 'sentRequests', model: 'FriendRequests',
+          populate: { path: 'receiver_id', model: 'User' }, match: { status: 'pending' }
+        });
+
+      const users = await userSchema.find({
+        username: { $regex: q, $options: "i", $ne: user.username },
+        _id: {
+          $nin: [
+            ...user.friends.map(id => id),
+            ...user.friendRequests.map(req => req.sender_id),
+            ...user.sentRequests.map(req => req.receiver_id)
+          ]
         }
+      });
+
+      if (users) {
+        return res.status(200).send(users);
       }
+      else return res.status(404).send("nothing found!");
     }
-    if (newUsers) {
-      return res.status(200).send(newUsers);
-    }
-    else res.status(404).send("nothing foud!");
   } catch (error) {
-    res.send('something went wrong!');
+    return res.send('something went wrong!');
   }
 })
 
 // sending a friend request to a user
-router.get('/makefriend', isLoggedIn, async function (req, res, next) {
+router.post('/makefriend', isLoggedIn, async function (req, res, next) {
 
-  const { receiver_id } = req.body;
-  const currUser = req.express.session.user;
-  // const currUser = "66a3e9d2924cfc2bbdb21e80";
+  const { receiver_id } = req.headers;
+  const currUser = req.session.passport.user;
+  // const currUser = "66a8b10ced2ff17ea7022a3c";
 
-  const check_sender = await userSchema.findOne({ _id: currUser });
+  const check_sender = await userSchema.findOne({ username: currUser });
   if (!check_sender) {
     return res.status(404).send("invalid request");
   }
@@ -88,15 +106,41 @@ router.get('/makefriend', isLoggedIn, async function (req, res, next) {
 
   try {
     const request = await friendRequests.create({
-      sender_id: currUser,
+      sender_id: check_sender._id,
       receiver_id: receiver_id
     });
 
     const them = await userSchema.findByIdAndUpdate(receiver_id, { friendRequests: request._id });
-    const us = await userSchema.findByIdAndUpdate(currUser, { sentRequests: request._id });
-    res.status(200).send('Friend request sent!');
+    const us = await userSchema.findByIdAndUpdate(check_sender._id, { sentRequests: request._id });
+    console.log(them);
+    if (them && us) {
+      return res.json({ username: us.username, image: us.image, id: us._id, tusername: them.username, timage: them.image, tid: them._id, rid: request._id})
+    }
+    else throw new error;
+
   } catch (error) {
     return res.status(500).send("Something went wrong on our side");
+  }
+})
+
+router.post('/cancelRequest', isLoggedIn, async function (req, res, next) {
+
+  const { request_id } = req.headers;
+
+  if (!request_id) {
+    return res.status(404).send('invalid request');
+  }
+
+  try {
+    const request = await friendRequests.findOneAndDelete({ _id: request_id });
+    if (!request) {
+      throw new error("Something went wrong!");
+    }
+
+    return res.status(200).send("operation performed successfully");
+
+  } catch (error) {
+    return res.status(500).send('Something went wrong!');
   }
 })
 
@@ -106,40 +150,50 @@ router.post('/checkoutRequest', isLoggedIn, async function (req, res) {
   if (!acceptReject || !request_id) {
     return res.status(400).send('invalid request');
   }
-  // const user = await userSchema.findOne({ username: req.session.passport.user });
-  const request = await friendRequests.findOne({ _id: request_id });
-  const them = await userSchema.findOne({ _id: request.sender_id });
-  const us = await userSchema.findOne({ _id: request.receiver_id });
 
-  console.log(them);
-  console.log(us);
-  console.log(request);
-
-  if (acceptReject == 'rejected') {
-    request.status = acceptReject;
+  try {
+    // const user = await userSchema.findOne({ username: req.session.passport.user });
+    const request = await friendRequests.findOne({ _id: request_id });
+    const them = await userSchema.findOne({ _id: request.sender_id });
+    const us = await userSchema.findOne({ _id: request.receiver_id });
+    
+    if (acceptReject == 'rejected') {
+      request.status = acceptReject;
+    }
+    else if (acceptReject == 'accepted') {
+      request.status = acceptReject;
+      them.friends.push(request.receiver_id);
+      us.friends.push(request.sender_id);
+      await them.save();
+      await us.save();
+    }
+    else {
+      return res.status(400).send('invalid request');
+    }
+    await request.save();
+    return res.status(200).send({id: us._id, username: us.username, image: us.image, tid: them._id, tusername: them.username, timage: them.image});
+  } catch (error) {
+    res.status(500).send("Something went wrong!");
   }
-  else if (acceptReject == 'accepted') {
-    request.status = acceptReject;
-    them.friends.push(request.receiver_id);
-    us.friends.push(request.sender_id);
-    await them.save();
-    await us.save();
-  }
-  else {
-    return res.status(400).send('invalid request');
-  }
-  await request.save();
-  return res.status(200).send("operation performed successfully");
 })
 
 // sending a message
-// router.post('/messages', isLoggedIn, async function (req, res, next) {
-//   const { sender_id, receiver_id, message } = req.body;
-//   const newMessage = await messageSchema.create({
-//     sender_id, receiver_id, message
-//   });
-//   res.send(newMessage);
-// });
+router.post('/messages', isLoggedIn, async function (req, res, next) {
+  try {
+    const { sender_id, receiver_id, message } = req.body;
+    if (sender_id || receiver_id || message.length > 0) {
+      const newMessage = await messageSchema.create({
+        sender_id, receiver_id, message
+      });
+      return res.send(newMessage);
+    }
+    else {
+      return res.status(400).send("please enter a valid message!");
+    }
+  } catch (error) {
+    return res.status(500).send("Something went wrong!");
+  }
+});
 
 // uploading a profile photo from the available avatar options 
 router.post('/upload-pic', isLoggedIn, async function (req, res) {
@@ -214,6 +268,58 @@ router.get('/logout', isLoggedIn, function (req, res, next) {
     return res.redirect('/')
   })
 });
+router.post('/block', isLoggedIn, async function (req, res) {
+  const { user_id } = req.headers;
+  if (user_id == undefined) return res.status(404).send('please select a valid user');
+  try {
+    const user = await userSchema.findOne({ username: req.session.passport.user }).populate('friends', ['_id']);
+    const blockable = user.friends.filter((friend) => {
+      return friend._id == user_id;
+    });
+    if (blockable) {
+      const blocked = user.friends.filter((friend) => {
+        return friend._id != user_id;
+      })
+      user.friends = blocked;
+      user.blocked.push(user_id);
+      await user.save();
+      return res.status(200).send('blocked');
+    }
+    else {
+      return res.status(404).send('User is not in your frinds list!');
+    }
+  }
+
+  catch (err) {
+    return res.status(500).send('Something went wrong!');
+  }
+})
+router.post('/unblock', isLoggedIn, async function (req, res) {
+  const { user_id } = req.headers;
+  if (user_id == undefined) return res.status(404).send('please select a valid user');
+  try {
+    const user = await userSchema.findOne({ username: req.session.passport.user }).populate('blocked', ['_id']);
+    const unblockable = user.blocked.filter((friend) => {
+      return friend._id == user_id;
+    });
+    if (unblockable) {
+      const blocked = user.blocked.filter((friend) => {
+        return friend._id != user_id;
+      })
+      user.blocked = blocked;
+      user.friends.push(user_id);
+      await user.save();
+      return res.status(200).send('blocked');
+    }
+    else {
+      return res.status(404).send('User is not in your frinds list!');
+    }
+  }
+
+  catch (err) {
+    return res.status(500).send('Something went wrong!');
+  }
+})
 
 // checking if the user is logged-in or not
 function isLoggedIn(req, res, next) {

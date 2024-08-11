@@ -6,38 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/stylesheets/chats.css">
     <!-- icon link -->
+    <link rel="icon" href="/images/logo.png">
     <script src="https://kit.fontawesome.com/8625ac6713.js" crossorigin="anonymous"></script>
     <!-- fonts link -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lobster&family=Martel:wght@200;300;400;600;700;800;900&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"> -->
 
+    <!-- integrating socke.io  -->
     <script src="/socket.io/socket.io.js"></script>
-
-    <script>
-        // const userId = <%= user._id %>;
-        // var socket = io('/user-namespace',{
-        //     auth:{
-        //         token: userId
-        //     }
-        // });
-        // var socket = io.connect('http://localhost:3000');
-
-        // socket.on('connect', function () {
-        //     console.log('Client has connected to the server!');
-        // });
-
-        // socket.on('disconnect', function(){
-        //     console.log('Client has disconnected to the sercer!');
-        // })
-        // socket.on('news', function (data) {
-        //     $("#iomsg").html(data);
-        //     socket.emit('newsresponse', 'this is news response');
-        // });
-    </script>
 
     <title>Baat cheet</title>
 </head>
@@ -46,31 +27,40 @@
     <div id="div">
         <div id="sidebar">
             <div id="top-nav">
-
-                <span>Baat-Cheet</span>
-                <i class="fa-solid fa-gear setting"></i>
+                <div id="logo">
+                    <img src="/images/logo.png" alt="logo">
+                    <span>Baat-Cheet</span>
+                </div>
+                <i class="fa-solid fa-bars setting"></i>
+                <!-- <i class="fa-solid fa-gear "></i> -->
                 <div id="ul" class="ul">
-                    <a id="profile-btn" href="/profile">Profile</a>
-                    <a id="log-btn" href="/logout">Log out</a>
-                    <button id="theme-btn">Theme</button>
-                    <div id="ul2">
-                        <button id="dark-btn"></button>
+                    <button id="profile-btn" onclick="window.location.href='/profile'">Profile</button>
+                    <button id="log-btn" onclick="window.location.href='/logout'">Log out</button>
+                    <button id="theme-btn" class="theme-btn">Theme</button>
+                    <div id="ul2" class="dark-btn">
+                        <button id="dark-btn" class="dark-btn"></button>
                     </div>
                 </div>
             </div>
             <div id="user-profile" sender_id="<%= user._id %>">
-                <% if(user.image){ %>
-                    <img src="<%= user.image %>" alt="">
-                    <% } %>
-                        <% if(!user.image){ %>
-                            <img src="/images/user.jpg">
-                            <% } %>
-                                <span id="user-name">
-                                    <%= user.username %>
-                                </span>
-                                <div id="search-user">
-                                    <input type="search" placeholder="search friends" id="search">
-                                </div>
+                <div id="main-user">
+                    <% if(user.image){ %>
+                        <img src="<%= user.image %>" alt="">
+                        <% } %>
+                            <% if(!user.image){ %>
+                                <img src="/images/user.jpg">
+                                <% } %>
+                                    <span id="user-name">
+                                        <%= user.username %>
+                                    </span>
+                </div>
+
+                <input id="input" type="search" placeholder="search friends" id="search">
+
+                <div id="search-friends">
+                    <!-- dynamic data here  -->
+                </div>
+
 
             </div>
             <div id="masg-req">
@@ -83,44 +73,214 @@
                 <div id="chats">
                     <% if(user.friends && user.friends.length> 0){ %>
                         <% user.friends.forEach(currUser=> { %>
-                            <% if(user.username !=currUser.username){ %>
-                                <div id="display-user" user_id=<%=currUser._id %>>
+                            <div id="display-user-column" data-long-press-delay="500" class="display-user-column">
+                                <div class="user-hide-screen" id="display-user" user_id=<%=currUser._id %>>
                                     <img src="<%= currUser.image %>" alt="">
                                     <span id="user-name">
                                         <%= currUser.username %>
                                     </span>
                                 </div>
-                                <% } %>
-                                    <% }); %>
-                                        <% } %>
-                </div>
-                <div id="requests">
-                    <h5>request box</h5>
-
-                    <% if(user.friendRequests && (user.friendRequests.length> 0)){ %>
-                        <% user.friendRequests.forEach(request=> { %>
-                            <div id="display-user" request_id=<%=request._id %>>
-                                <img src="<%= request.sender_id.image %>" alt="">
-                                <div style="display: flex; flex-direction: column;">
-                                    <p id="user-name">
-                                        <%= request.sender_id.username %>
-                                    </p>
-                                    <div style="display: flex; flex-direction: row; gap: 2;">
-                                        <button id="accept"
-                                            onclick="acceptReject('accepted', '<%= request._id%>')">accept</button>
-                                        <button id="reject"
-                                            onclick="acceptReject('rejected', '<%= request._id%>')">reject</button>
-                                    </div>
+                                <div id="block-div" class="<%= currUser.username %>">
+                                    <button onclick="block('<%=currUser._id %>', '<%= currUser.username %>')">
+                                        <i class="fa-solid fa-user-slash"></i>
+                                        block
+                                    </button>
                                 </div>
                             </div>
                             <% }); %>
                                 <% } %>
+
+                </div>
+                <div id="requests">
+                    <div id="sent-recived">
+                        <i class="fa-solid fa-hourglass-end"></i>
+                    </div>
+
+                    <!-- rendering sent requests on the screen  -->
+                    <div id="sent-req">
+                        <div id="sent">
+                            <h3> Outgoing requests</h3>
+                            <div id="sent-requests">
+                                <% if(user.sentRequests && (user.sentRequests.length> 0)){ %>
+                                    <% user.sentRequests.forEach(request=> { %>
+                                        <div class="friends-req">
+                                            <div class="pending-req">
+                                                <img src="<%= request.receiver_id.image %>" alt="">
+                                                <sapn id="user-name">
+                                                    <%= request.receiver_id.username %>
+                                                </sapn>
+                                            </div>
+                                            <div class="req-icon" id="<%= request.receiver_id.username %>">
+                                                <i id="cancelled"
+                                                    onclick="cancelReq('<%= request._id%>', '<%= request.receiver_id.username %>')"
+                                                    class="fa-regular fa-circle-xmark"></i>
+                                            </div>
+                                            <div class="<%= request.receiver_id.username %>" style="display: none;">
+                                                <p class="cancelled" style="display: none;">Cancelled</p>
+                                            </div>
+                                        </div>
+                                        <% }); %>
+                                            <% } %>
+                            </div>
+                        </div>
+                        <!-- rendering received requests on the screen -->
+                        <div id="recived">
+                            <h3> Incoming requests</h3>
+                            <% if(user.friendRequests && (user.friendRequests.length> 0)){ %>
+                                <% user.friendRequests.forEach(request=> { %>
+                                    <div class="friends-req">
+                                        <div class="pending-req">
+                                            <img src="<%= request.sender_id.image %>" alt="">
+                                            <sapn id="user-name">
+                                                <%= request.sender_id.username %>
+                                            </sapn>
+                                        </div>
+                                        <div class="req-icon" id="<%= request.sender_id.username %>">
+                                            <i id="accept"
+                                                onclick="acceptReject('accepted', '<%= request._id%>', '<%= request.sender_id.username %>')"
+                                                class="fa-regular fa-circle-check"></i>
+                                            <i id="reject"
+                                                onclick="acceptReject('rejected', '<%= request._id%>', '<%= request.sender_id.username %>')"
+                                                class="fa-regular fa-circle-xmark"></i>
+
+                                        </div>
+                                        <div class="<%= request.sender_id.username %>" style="display: none;">
+                                            <p class="friends" style="display: none;" id="abc">you're friends now!
+                                            </p>
+                                            <p class="rejected" style="display: none;">Rejected</p>
+                                        </div>
+                                    </div>
+                                    <% }); %>
+                                        <% } %>
+                        </div>
+                    </div>
+                </div>
+                <div id="mobi-search-box">
+                    <div id="mobi-search-input">
+                        <input id="mobi-input" type="text" placeholder="search-friends">
+                    </div>
+                    <div id="mobi-request-shower">
+                        <div id="search-friends">
+                            <!-- dynamic data -->
+                        </div>
+                    </div>
+                </div>
+                <div id="profile-shower">
+                    <div id="naam-or-photo">
+                        <% if(user.image){ %>
+                            <img src="<%= user.image %>" alt="">
+                            <% } %>
+                                <% if(!user.image){ %>
+                                    <img src="/images/user.jpg">
+                                    <% } %>
+                                        <span id="user-name">
+                                            <%= user.username %>
+                                        </span>
+                    </div>
+                    <div id="profile-ul" class="profile-ul">
+                        <div id="theme-btn-div">
+                            <button id="theme-btn2">Theme</button>
+                            <i class="fa-solid fa-sun"></i>
+                            <i class="fa-solid fa-moon"></i>
+                        </div>
+                        <hr>
+                        <div id="block-user-div">
+                            <button id="block-user">Blocked users</button>
+                            <i class="fa-solid fa-user-slash"></i>
+                        </div>
+                        <hr>
+                        <div id="delete-account-div">
+                            <button id="delete-account">Delete account</button>
+                            <i class="fa-regular fa-trash-can"></i>
+                        </div>
+                        <div id="ul3">
+                            <button id="dark-btn2"></button>
+                        </div>
+                        <hr>
+                        <div id="log-out">
+                            <button id="log-btn" onclick="logout()">Log out</button>
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        </div>
+                        <hr>
+                        <div id="upword-downword">
+                            <i class="fa-solid fa-angle-up" id="up-down"></i>
+                        </div>
+                    </div>
+                    <div id="logout-popup-back">
+                        <div id="logout-popup">
+                            <h2>loging out</h2>
+                            <span>😊</span>
+                            <h2>see you soon</h2>
+                        </div>
+                    </div>
+                    <div id="delete-popup-back">
+                        <div id="delete-popup">
+                            <h2>You sure about it?</h2>
+                            <hr>
+                            <div>
+                                <button>Delete</button>
+                                <button id="delete-back-btn">back</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="blocked-popup-back">
+                        <div id="blocked-popup-head">
+                            <i class="fa-solid fa-angle-left block-back-btn"></i>
+                            <h2>Blocked user</h2>
+                        </div>
+                        <!-- rendering the blocked users on the screen  -->
+                        <div id="act-block-div">
+                            <% if(user.blocked && user.blocked.length> 0){ %>
+                                <% user.blocked.forEach(currUser=> { %>
+                                    <div id="display-user-column">
+                                        <div class="user-hide-screen" id="display-user" user_id=<%=currUser._id %>>
+                                            <img src="<%= currUser.image %>" alt="">
+                                            <span id="user-name">
+                                                <%= currUser.username %>
+                                            </span>
+                                        </div>
+                                        <div id="block-div" class="<%= currUser.username %>">
+                                            <button
+                                                onclick="unblock('<%=currUser._id %>', '<%= currUser.username %>')">unblock</button>
+                                        </div>
+                                    </div>
+                                    <% }); %>
+                                        <% } %>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+            <footer>
+                <div id="msg-req-search">
+                    <div id="msg-open" class="bottom-tabs transition">
+                        <i class="fa-solid fa-comment"></i>
+                        <div id="red-dot"></div>
+                    </div>
+                    <div id="req-open" class="bottom-tabs">
+                        <i class="fa-solid fa-user-group"></i>
+                        <div id="red-dot"></div>
+                    </div>
+                    <div id="search-open" class="bottom-tabs">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                    <div id="profile-update" class="bottom-tabs">
+                        <% if(user.image){ %>
+                            <img src="<%= user.image %>" alt="">
+                            <% } %>
+                                <% if(!user.image){ %>
+                                    <img src="/images/user.jpg">
+                                    <% } %>
 
+                    </div>
+
+                </div>
+        </div>
+        </footer>
 
         <!-- -----------mag box------------- -->
+        <div id="default-main-box">
+            <span>Start doing Baat-Cheet</span>
+        </div>
         <div id="main-box" class="main-box">
 
             <div id="head">
@@ -135,81 +295,34 @@
                                         <%= user.username %>
                                     </span>
                 </div>
+                <i class="fa-solid fa-right-from-bracket back-btn"></i>
             </div>
             <div id="msg-box">
                 <div class="cir1"></div>
                 <div class="cir2"></div>
-                <!-- <div class="our-messages">
-                    <span class="message">Hi</span>
+
+                <div class="massanger">
+                    <!-- dynamic data here  -->
                 </div>
-                <div class="distance-user-msg">
-                    <span class="message">Hi</span>
-                </div> -->
             </div>
 
             <div id="footer">
-                <form id="message-form">
-                    <input type="text" placeholder="Type something" name="message" id="message">
-                    <button type="submit">Send</button>
+                <form id="message-form" method="post">
+                    <textarea id="message" name="message" rows="1" placeholder="Type something..."></textarea>
+                    <!-- <input type="text" id="message" placeholder="Type something" name="message" id="message"> -->
+                    <button type="submit" id="text-button" disabled>Send</button>
+                    <div id="icon-send-button">
+                        <button type="submit" disabled><i class="fa-regular fa-paper-plane"></i></button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 
     <script src="/javascripts/chats.js"></script>
-    <!-- <script>
-        const userId = '<%= user._id %>';
-        var socket = io('/user-namespace', {
-            auth: {
-                token: '<%= user._id %>'
-            }
-        });
-    </script> -->
-    <!-- <script>
-        var socket = io('/user-namespace');
-        const receiver_id = document.querySelector('#display-user').getAttribute('user_id');
-        const sender_id = document.querySelector('#user-profile').getAttribute('sender_id');
-
-        socket.on('loadNewChat', (data) => {
-            if (sender_id == data.receiver_id && receiver_id == data.sender_id) {
-
-                const html = `
-                    <div class="distance-user-msgs">
-                    <span class="message">${data.message}</span>
-                    </div>`;
-
-                document.querySelector('#msg-box').innerHTML += html;
-            }
-        })
-    </script> -->
-    <!-- 
     <script>
-        const usernames = document.querySelectorAll('#display-user #user-name');
-        const users = document.querySelectorAll('#display-user');
-        document.querySelector('#search').addEventListener('input', function (event) {
-            const term = event.target.value.toLowerCase();
-        //     usernames.filter(name => {
-        //         if (!name.toLowerCase().includes(term)) {
-        //             name.outerHTML.style.display = 'none';
-        //         }
-        //     })
-        
-        usernames.forEach(elem=>{
-            if(!(elem.textContent).includes(term)){
-                // elem.classList.add('none');
-                // elem.parentElement.classList.add('none');
-                elem.parentElement.style.display = 'none';
-                // elem.classList.add('none');
-                // console.log(elem)
-            }
-            else{
-                // elem.parentElement.classList.remove('none');
-                elem.parentElement.style.display = 'flex';
-            }
-        })
-    })
-    // console.log(users[0].innerHTML);
-    </script> -->
+        !function (t, e) { "use strict"; function n() { this.dispatchEvent(new CustomEvent("long-press", { bubbles: !0, cancelable: !0 })), clearTimeout(o), console && console.log } var o = null, u = "ontouchstart" in t || navigator.MaxTouchPoints > 0 || navigator.msMaxTouchPoints > 0, s = u ? "touchstart" : "mousedown", i = u ? "touchcancel" : "mouseout", a = u ? "touchend" : "mouseup", c = u ? "touchmove" : "mousemove"; "initCustomEvent" in e.createEvent("CustomEvent") && (t.CustomEvent = function (t, n) { n = n || { bubbles: !1, cancelable: !1, detail: void 0 }; var o = e.createEvent("CustomEvent"); return o.initCustomEvent(t, n.bubbles, n.cancelable, n.detail), o }, t.CustomEvent.prototype = t.Event.prototype), e.addEventListener(s, function (t) { var e = t.target, u = parseInt(e.getAttribute("data-long-press-delay") || "1500", 10); o = setTimeout(n.bind(e), u) }), e.addEventListener(a, function (t) { clearTimeout(o) }), e.addEventListener(i, function (t) { clearTimeout(o) }), e.addEventListener(c, function (t) { clearTimeout(o) }) }(this, document);
+    </script>
 </body>
 
 </html>
