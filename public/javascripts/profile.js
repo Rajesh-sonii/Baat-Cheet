@@ -116,7 +116,7 @@ function uploadPhoto() {
 }
 
 // for toggling the iamges div
-let image = document.getElementById('img-div')
-function showAvtar(params) {
-    image.classList.toggle("images")
-}
+// let image = document.getElementById('img-div')
+// function showAvtar(params) {
+//     image.classList.toggle("images")
+// }

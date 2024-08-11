@@ -40,13 +40,13 @@ body{
 .profile-pic span{
     font-size: 50px;
 }
-.images{
+/* .images{
     width: 50%;
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: center;
     border: blue solid;
-}
+} */
 #images {
     display: flex;
     flex-wrap: wrap;

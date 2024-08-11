@@ -14,6 +14,25 @@ let click = true
         input1.addEventListener("click", function (params) {
             ani()
         })
+
+        // for showing the error message when the user enteres a space in the username field
+        input1.addEventListener('input', (event)=>{
+            const input = event.target.value.trim();
+            const sign = document.querySelector('#sign');
+            const red = document.querySelector('#form #red');
+            if(input.split(' ').length > 1){
+                sign.disabled = true;
+                red.style.display = 'flex';
+                input1.style.border = '2px solid red';
+                input1.style.outline = 'none';
+            }
+            else{
+                sign.disabled = false;
+                input1.style.border = 'none';
+                red.style.display = 'none';
+            }
+        })
+
         let input2 = document.getElementById("input2")
         input2.addEventListener("click", function (params) {
             ani()
