@@ -372,13 +372,16 @@ body {
     padding: 5px;
     align-items: center;
 }
- #new-msg-dot{
+
+#new-msg-dot {
     width: 10px;
     height: 10px;
+    margin: 10px;
     border-radius: 50%;
-    margin:auto 10%;
     background-color: var(--sixth-color);
+    display: none;
 }
+
 #display-user img:hover {
     cursor: pointer;
 }
@@ -414,6 +417,22 @@ body {
 }
 
 #block-div button:hover {
+    cursor: pointer;
+}
+
+/* for the block button which resides in the blocked section  */
+#blocked-div {
+    margin-right: 5%;
+    align-items: center;
+}
+
+#blocked-div button {
+    color: red;
+    background: transparent;
+    border: none;
+}
+
+#blocked-div button:hover {
     cursor: pointer;
 }
 
@@ -1055,18 +1074,19 @@ body {
         transform: scaleX(1);
     }
 
-    .transition{
+    .transition {
         background-color: var(--seventh-color);
         /* transform: scaleX(0.1); */
     }
-    .transition i{
+
+    .transition i {
         /* color: var(--forth-color); */
         /* transform: scaleX(1); */
         /* background-color: white; */
         color: var(--forth-color);
     }
 
-    
+
     #msg-req-search #msg-open:hover::before,
     #req-open:hover::before,
     #search-open:hover::before,

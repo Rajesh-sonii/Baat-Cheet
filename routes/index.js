@@ -47,7 +47,6 @@ router.get('/chat', isLoggedIn, async function (req, res, next) {
     })
     .populate('blocked', ['_id', 'username', 'image']);
 
-  console.log(user);
   res.render('chats', { user });
 });
 
@@ -112,7 +111,6 @@ router.post('/makefriend', isLoggedIn, async function (req, res, next) {
 
     const them = await userSchema.findByIdAndUpdate(receiver_id, { friendRequests: request._id });
     const us = await userSchema.findByIdAndUpdate(check_sender._id, { sentRequests: request._id });
-    console.log(them);
     if (them && us) {
       return res.json({ username: us.username, image: us.image, id: us._id, tusername: them.username, timage: them.image, tid: them._id, rid: request._id})
     }
