@@ -1,3 +1,5 @@
+const url='http://localhost:3000'
+// const url = process.env.APP_URL;
 let ul = document.getElementById('ul')
 let ul2 = document.getElementById('ul2')
 let ul3 = document.getElementById('ul3')
@@ -152,66 +154,56 @@ let msgbox = document.querySelector('.massanger');
 
 const sender_id = document.querySelector('#user-profile').getAttribute('sender_id');
 let receiver_id;
-let msg = document.querySelectorAll('#display-user')
+// let msg = document.querySelectorAll('#display-user')
 // let msg = document.querySelectorAll('#display-user-column')
-msg.forEach(single => {
+// msg.forEach(single => {
 
-    single.addEventListener('click', function (params) {
-        let mainBox = document.getElementById('main-box')
-        receiver_id = single.getAttribute('user_id');
-        // const uname = document.querySelector('#cur-user-uname')
-        // const img = document.querySelector('#cur-user-img')
-        // if (msgBox.style.display == 'flex') {
-        //     msgBox.style.display = 'none'
-        // }
-        // else {
-        // socket.on('loadNewChat', (data) => {
-        //     if (receiver_id == data.sender_id) {
-        //         console.log(receiver_id)
-        //         console.log(data.sender_id)
-        // for removing the red dot from the message box downside
-        document.querySelector('#msg-req-search #msg-open #red-dot').style.display = 'none';
-        //     }
-        // });
+let mainBox = document.getElementById('main-box')
+let defaultscreen = document.getElementById('default-main-box')
+function fetchMsg(rec_id, uname, elem) {
+    // single.addEventListener('click', function (params) {
+    // receiver_id = single.getAttribute('user_id');
+    // const dot = document.querySelector(`.${uname} .${uname}`);
+    // if(dot.style.display == 'flex'){
+    //     dot.style.display = 'none';
+    // }
+    // console.log(elem.div)
+    elem.lastElementChild.style.display = 'none';
 
+    receiver_id = rec_id;
 
-        let defaultscreen = document.getElementById('default-main-box')
-        defaultscreen.style.display = "none"
-        mainBox.style.display = 'flex'
-        // }
+    defaultscreen.style.display = "none"
+    mainBox.style.display = 'flex'
 
-        document.querySelector('#msg-box-name').innerHTML = single.innerHTML;
-        msgbox.innerHTML = "";
+    document.querySelector('#msg-box-name').innerHTML = document.querySelector(`.${uname}`).innerHTML;
+    msgbox.innerHTML = "";
 
-        // console.log(receiver_id);
-        // console.log(sender_id);
+    socket.emit('loadChats', { sender_id, receiver_id });
 
-        socket.emit('loadChats', { sender_id, receiver_id });
+    socket.on('getChats', function (data) {
 
-        socket.on('getChats', function (data) {
-
-            // })
-            data.forEach(message => {
-                msgbox.innerHTML += `
+        data.forEach(message => {
+            msgbox.innerHTML += `
                     ${message.receiver_id == receiver_id && message.sender_id == sender_id ?
 
-                        `<div id="outgoing-msg">
+                    `<div id="outgoing-msg">
                             <div class="user-input">
                                 <p>${message.message}</p>
                             </div>
                         </div>`: ""}
                         ${message.sender_id != sender_id ?
-                        `<div id="incoming-msg">
+                    `<div id="incoming-msg">
                             <div class="friends-input">
                                 <p>${message.message}</p>
                             </div>
                         </div>`: ""}`
-            })
-            msgbox.scrollTo(0, msgbox.scrollHeight)
-        });
-    })
+        })
+        msgbox.scrollTo(0, msgbox.scrollHeight)
+    });
+}
+// )
 
-});
+// });
 
 let slide = document.getElementById('main-box')
 slide.addEventListener('slide right', function (params) {
@@ -227,7 +219,6 @@ slide.addEventListener('slide right', function (params) {
 // let follow = document.getElementById("follow")
 // let following = document.getElementById("following")
 // follow.addEventListener('click',function (params) {
-//     console.log("follower faknvlasmk");
 //     following.style.display = "flex"
 //     follow.style.display = "none"
 // })
@@ -243,7 +234,6 @@ buttonSentRequest.addEventListener('click', function (params) {
         buttonSentRequest.style.transition = '0.5s'
     }
     else {
-        console.log("sent")
         sentRequest.style.display = "none"
         recivedRequest.style.display = "flex"
         buttonSentRequest.style.rotate = '0deg'
@@ -308,6 +298,9 @@ msgOpen.addEventListener('click', function () {
     profilePanel.style.display = "none"
     mobiSearchPanel.style.display = "none"
 
+    // for removing the red dot from the message box downside
+    document.querySelector('#msg-req-search #msg-open #red-dot').style.display = 'none';
+
     // msgOpen.style = 'background: white; transform: scaleX(0.1);'
     if (white > 1) {
         bgRemover(white);
@@ -333,10 +326,10 @@ reqOpen.addEventListener('click', function () {
     // document.querySelector('#req-open i').style = 'color: black;'
 
     // for hiding the red Dot from it
-    const redDot = document.querySelector('#msg-req-search #req-open #red-dot');
-    if (redDot.style.display == 'flex') {
-        redDot.style.display = 'none';
-    }
+    // const redDot = document.querySelector('#msg-req-search #req-open #red-dot');
+    // if (redDot.style.display == 'flex') {
+    redDot.style.display = 'none';
+    // }
 })
 //function for mobile search bar
 // for showing the search tab
@@ -371,7 +364,6 @@ profile.addEventListener('click', function () {
 // let mobifollow = document.getElementById("mobi-follow")
 // let mobifollowing = document.getElementById("mobi-following")
 // mobifollow.addEventListener('click',function (params) {
-//     console.log("follower faknvlasmk");
 //     mobifollowing.style.display = "flex"
 //     mobifollow.style.display = "none"
 // })
@@ -402,14 +394,14 @@ let profileUl = document.querySelector('#profile-ul')
 let arrow = document.querySelector('#upword-downword #up-down');
 let settingBtn = document.querySelector('#upword-downword')
 settingBtn.addEventListener('click', function (params) {
-    if (profileUl.style.top == '-26dvh' || settingBtn.style.rotate == '180deg') {
+    if (profileUl.style.top == '-35dvh' || settingBtn.style.rotate == '180deg') {
         profileUl.style.top = '0'
         arrow.style.transform = 'rotate(0deg)'
         settingBtn.style.transition = '0.5s'
         profileUl.style.transition = '0.5s'
     }
     else {
-        profileUl.style.top = '-26dvh'
+        profileUl.style.top = '-35dvh'
         arrow.style.transform = 'rotate(180deg)'
         settingBtn.style.transition = '0.5s'
         profileUl.style.transition = '0.5s'
@@ -427,6 +419,51 @@ const textArea = document.querySelector('#message')
 //         messageForm.submit();
 //     }
 // }
+
+document.getElementById("message").addEventListener("keypress", async (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+
+        // e.currentTarget.closest("form").submit();
+        // const message = document.querySelector('#message').value;
+        const message = e.target.value;
+        let data;
+
+        // if (message.length <= 0 || message.split(" ").length > 0) {
+        //     return;
+        // }
+        try {
+            const res = await fetch(`${url}/messages`, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    message,
+                    receiver_id,
+                    sender_id
+                })
+            });
+
+            if (res) {
+                data = await res.json()
+                const html = `
+                <div id="outgoing-msg">
+                    <div class="user-input">
+                        <p>${data.message}</p>
+                    </div>
+                </div>`;
+
+                document.querySelector('.massanger').innerHTML += html;
+                msgbox.scrollTo(0, msgbox.scrollHeight)
+            }
+        } catch (error) {
+            console.log('something went wrong, please try again in some time');
+        }
+
+        // document.getElementById('message').value = '';
+        e.target.value = '';
+        socket.emit('newChat', data);
+    }
+});
 
 // for disable/enable the send button
 textArea.addEventListener('input', (event) => {
@@ -447,50 +484,51 @@ textArea.addEventListener('input', (event) => {
 var socket = io('/user-namespace');
 
 // handling what to do when a user sends a message
-messageForm.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    const message = document.querySelector('#message').value;
-    let data;
+// messageForm.addEventListener('submit', async (event) => {
+//     event.preventDefault();
+//     const message = document.querySelector('#message').value;
+//     let data;
 
-    // if (message.length <= 0 || message.split(" ").length > 0) {
-    //     return;
-    // }
-    try {
-        const res = await fetch("http://localhost:3000/messages", {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                message,
-                receiver_id,
-                sender_id
-            })
-        });
+//     // if (message.length <= 0 || message.split(" ").length > 0) {
+//     //     return;
+//     // }
+//     try {
+//         const res = await fetch("${url}/messages", {
+//             method: "POST",
+//             headers: { 'Content-Type': 'application/json' },
+//             body: JSON.stringify({
+//                 message,
+//                 receiver_id,
+//                 sender_id
+//             })
+//         });
 
-        if (res) {
-            data = await res.json()
-            const html = `
-                <div id="outgoing-msg">
-                    <div class="user-input">
-                        <p>${data.message}</p>
-                    </div>
-                </div>`;
+//         if (res) {
+//             data = await res.json()
+//             const html = `
+//                 <div id="outgoing-msg">
+//                     <div class="user-input">
+//                         <p>${data.message}</p>
+//                     </div>
+//                 </div>`;
 
-            document.querySelector('.massanger').innerHTML += html;
-            msgbox.scrollTo(0, msgbox.scrollHeight)
-        }
-    } catch (error) {
-        // console.log('something went wrong, please try again in some time');
-    }
+//             document.querySelector('.massanger').innerHTML += html;
+//             msgbox.scrollTo(0, msgbox.scrollHeight)
+//         }
+//     } catch (error) {
+//         console.log('something went wrong, please try again in some time');
+//     }
 
-    document.getElementById('message').value = '';
-    socket.emit('newChat', data);
-})
+//     document.getElementById('message').value = '';
+//     socket.emit('newChat', data);
+// })
 
 // for chtching the event of getting a new message
 socket.on('loadNewChat', (data) => {
     // for showing the red dot on the message box downside
-    document.querySelector('#msg-req-search #msg-open #red-dot').style.display = 'flex';
-    // console.log('systum ' + data);
+    if (chatsshow.style.display == 'none') {
+        document.querySelector('#msg-req-search #msg-open #red-dot').style.display = 'flex';
+    }
     if (sender_id == data.receiver_id && receiver_id == data.sender_id) {
 
         const html = `
@@ -504,7 +542,30 @@ socket.on('loadNewChat', (data) => {
         msgbox.scrollTo(0, msgbox.scrollHeight)
 
     }
+
+
+    // for displaying the dot beside the username (indicating that they have received a new message)
+    document.querySelectorAll('#new-msg-dot').forEach(single => {
+        if (single.classList.contains(`${data.sender_id}`)) {
+            single.style.display = 'block';
+            console.log('helo')
+        }
+    })
+
+
+    // const id = document.querySelector(`.${data.receiver_id}`);
+    // const id2 = document.querySelector(`${data.sender_id}`);
+    // console.log(id);
+    // console.log(id2);
+    // document.querySelector(`#${data.sender_id}`).innerHTML += '<div id="new-msg-dot"></div>';
 })
+
+// msgOpen.addEventListener('focus', () => {
+//     document.querySelector('#msg-req-search #msg-open #red-dot').style.display = 'none';
+// })
+// reqOpen.addEventListener('focus', () => {
+//     document.querySelector('#msg-req-search #req-open #red-dot').style.display = 'none';
+// })
 
 // using debounce function for fetching the data after the specified time
 function debounce(func, wait) {
@@ -525,7 +586,7 @@ function debounce(func, wait) {
 // making a debounced api call after 1 second
 const debouncedSearch = debounce(async (value, container) => {
     // Your API call logic here
-    const promise = await fetch(`http://localhost:3000/searchfriend?q=${value}`)
+    const promise = await fetch(`${url}/searchfriend?q=${value}`)
     const res = await promise.json();
 
     container.innerHTML = "";
@@ -576,18 +637,19 @@ document.querySelector('#mobi-input').addEventListener('input', async function (
     const value = event.target.value;
     let container = document.querySelector('#mobi-request-shower #search-friends');
     if (value != "") {
-
+        container.style.display = 'flex';
         // making a debounced api call which will evaluate after 1 second
         debouncedSearch(value, container);
     }
     else {
+        container.style.display = 'none';
         container.innerHTML = "";
     }
 })
 
 // handling the event to fire when the user clicks on the sendRequest button
 async function sendReq(receiver_id) {
-    const res = await fetch('http://localhost:3000/makefriend', {
+    const res = await fetch(`${url}/makefriend`, {
         method: "POST",
         headers: { receiver_id }
     })
@@ -597,7 +659,6 @@ async function sendReq(receiver_id) {
         const follow = document.querySelector(`#${data.tusername}`)
         // for changing the follow icon to following icon when the user clicks on it 
         const following = document.querySelector(`.${data.tusername}`)
-        console.log(following);
 
         following.style.display = "flex"
         follow.style.display = "none"
@@ -652,8 +713,10 @@ socket.on('sentFriendRequest', (data) => {
     recivedRequest.innerHTML += newReq;
 
     // for showing the red dot in the bottom
-    const redDot = document.querySelector('#msg-req-search #req-open #red-dot');
-    redDot.style.display = 'flex';
+    if (reqBox.style.display = 'none') {
+        const redDot = document.querySelector('#msg-req-search #req-open #red-dot');
+        redDot.style.display = 'flex';
+    }
 })
 
 // function for acepting or rejecting the friend request
@@ -662,7 +725,7 @@ async function acceptReject(status, id, uname) {
     if ((status == 'accepted' || status == 'rejected') && id != undefined) {
         let data;
         try {
-            const res = await fetch('http://localhost:3000/checkoutRequest',
+            const res = await fetch(`${url}/checkoutRequest`,
                 {
                     method: 'POST',
                     body: JSON.stringify({ acceptReject: status, request_id: id }),
@@ -689,18 +752,18 @@ async function acceptReject(status, id, uname) {
             document.querySelector(`.${data.tusername} .friends`).style.display = 'block';
 
             const newFrnd = `<div id="display-user-column" data-long-press-delay="500" class="display-user-column">
-                                <div class="user-hide-screen" id="display-user" user_id="${data.tid}">
-                                    <img src="${data.timage}" alt="">
-                                    <span id="user-name">
-                                        ${data.tusername}
-                                    </span>
-                                </div>
-                                <div id="block-div" class="${data.tusername}">
-                                    <button onclick="block('${data.rid}', '${data.tusername}')">
-                                        <i class="fa-solid fa-user-slash"></i>
-                                        block
-                                    </button>
-                                </div>
+                                <div class="${data.tusername}" id="display-user" onclick="fetchMsg('${data.tid}', '${data.tusername}')">
+                                        <img src="${data.timage}" alt="">
+                                        <span id="user-name">
+                                            ${data.tusername}
+                                        </span>
+                                    </div>
+                                    <div id="block-div" class="${data.tusername}">
+                                        <button onclick="block('${data.tid}', '${data.tusername}')">
+                                            <i class="fa-solid fa-user-slash"></i>
+                                            block
+                                        </button>
+                                    </div>
                             </div>`;
 
             chatsshow.innerHTML += newFrnd;
@@ -716,14 +779,14 @@ async function acceptReject(status, id, uname) {
 // catching the event of getting a new friend request
 socket.on('newFriend', (data) => {
     const newFrnd = `<div id="display-user-column" data-long-press-delay="500" class="display-user-column">
-                                <div class="user-hide-screen" id="display-user" user_id="${data.id}">
+                                <div class='${data.username}' id="display-user" onclick="fetchMsg('${data.id}', '${data.username}')">
                                     <img src="${data.image}" alt="">
                                     <span id="user-name">
                                         ${data.username}
                                     </span>
                                 </div>
                                 <div id="block-div" class="${data.username}">
-                                    <button onclick="block('${data.rid}', '${data.username}')">
+                                    <button onclick="block('${data.id}', '${data.username}')">
                                         <i class="fa-solid fa-user-slash"></i>
                                         block
                                     </button>
@@ -737,7 +800,7 @@ socket.on('newFriend', (data) => {
 async function cancelReq(id, uname) {
 
     try {
-        const res = await fetch('http://localhost:3000/cancelRequest',
+        const res = await fetch(`${url}/cancelRequest`,
             {
                 method: 'POST',
                 headers: {
@@ -776,13 +839,13 @@ function logout() {
 // for blocking a friend
 function block(uid, uname) {
 
-    fetch('http://localhost:3000/block', {
+    fetch(`${url}/block`, {
         method: 'POST',
         headers: { "user_id": uid },
     })
         .then(res => {
             if (res.ok) {
-                document.querySelector(`.${uname}`).textContent = 'blocked';
+                document.querySelector(`.${uname} .${uname}`).textContent = 'blocked';
             }
         })
 }
@@ -790,7 +853,7 @@ function block(uid, uname) {
 // for unblocking a friend
 function unblock(uid, uname) {
 
-    fetch('http://localhost:3000/unblock', {
+    fetch(`${url}/unblock`, {
         method: 'POST',
         headers: { "user_id": uid },
     })

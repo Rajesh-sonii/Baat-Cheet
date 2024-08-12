@@ -74,11 +74,13 @@
                     <% if(user.friends && user.friends.length> 0){ %>
                         <% user.friends.forEach(currUser=> { %>
                             <div id="display-user-column" data-long-press-delay="500" class="display-user-column">
-                                <div class="user-hide-screen" id="display-user" user_id=<%=currUser._id %>>
+                                <div class="<%= currUser.username %>" id="display-user"
+                                    onclick="fetchMsg('<%=currUser._id %>', '<%= currUser.username %>', this)">
                                     <img src="<%= currUser.image %>" alt="">
                                     <span id="user-name">
                                         <%= currUser.username %>
                                     </span>
+                                    <div class="<%=currUser._id %> <%= currUser.username %>" id="new-msg-dot"></div>
                                 </div>
                                 <div id="block-div" class="<%= currUser.username %>">
                                     <button onclick="block('<%=currUser._id %>', '<%= currUser.username %>')">
@@ -128,6 +130,7 @@
                             <h3> Incoming requests</h3>
                             <% if(user.friendRequests && (user.friendRequests.length> 0)){ %>
                                 <% user.friendRequests.forEach(request=> { %>
+
                                     <div class="friends-req">
                                         <div class="pending-req">
                                             <img src="<%= request.sender_id.image %>" alt="">
@@ -239,7 +242,7 @@
                                                 <%= currUser.username %>
                                             </span>
                                         </div>
-                                        <div id="block-div" class="<%= currUser.username %>">
+                                        <div id="blocked-div" class="<%= currUser.username %>">
                                             <button
                                                 onclick="unblock('<%=currUser._id %>', '<%= currUser.username %>')">unblock</button>
                                         </div>

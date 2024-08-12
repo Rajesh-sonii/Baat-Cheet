@@ -373,6 +373,15 @@ body {
     align-items: center;
 }
 
+#new-msg-dot {
+    width: 10px;
+    height: 10px;
+    margin: 10px;
+    border-radius: 50%;
+    background-color: var(--sixth-color);
+    display: none;
+}
+
 #display-user img:hover {
     cursor: pointer;
 }
@@ -408,6 +417,22 @@ body {
 }
 
 #block-div button:hover {
+    cursor: pointer;
+}
+
+/* for the block button which resides in the blocked section  */
+#blocked-div {
+    margin-right: 5%;
+    align-items: center;
+}
+
+#blocked-div button {
+    color: red;
+    background: transparent;
+    border: none;
+}
+
+#blocked-div button:hover {
     cursor: pointer;
 }
 
@@ -1049,26 +1074,27 @@ body {
         transform: scaleX(1);
     }
 
-    .transition{
-        background-color: white;
+    .transition {
+        background-color: var(--seventh-color);
         /* transform: scaleX(0.1); */
     }
-    .transition i{
+
+    .transition i {
         /* color: var(--forth-color); */
         /* transform: scaleX(1); */
         /* background-color: white; */
-        color: black;
+        color: var(--forth-color);
     }
 
-    /* 
+
     #msg-req-search #msg-open:hover::before,
     #req-open:hover::before,
     #search-open:hover::before,
     #profile-update:hover::before {
         color: var(--forth-color);
-        transform: scaleX(0.1);
+        transform: scaleX(0.2);
 
-    } */
+    }
 
     #msg-req-search i {
         scale: 1.5;
@@ -1133,10 +1159,10 @@ body {
         display: flex;
         flex-direction: column;
         position: absolute;
-        top: -26dvh;
+        top: -35dvh;
         color: white;
         /* height: auto; */
-        height: 42%;
+        height: 42dvh;
         width: 100%;
         justify-content: center;
         background-color: var(--sixth-color);
@@ -1183,7 +1209,7 @@ body {
 
     #profile-shower #upword-downword {
         /* width: 20%; */
-        height: 30px;
+        height: 10px;
         display: flex;
         /* align-items: center; */
         justify-content: center;
@@ -1417,12 +1443,12 @@ body {
 
     #msg-req-search #req-open #red-dot {
         background: red;
-        width: 20px;
-        height: 20px;
+        width: 15px;
+        height: 15px;
         border-radius: 50%;
         position: absolute;
         top: 0;
-        left: 10%;
+        left: 15%;
         display: none;
     }
 
