@@ -402,14 +402,14 @@ let profileUl = document.querySelector('#profile-ul')
 let arrow = document.querySelector('#upword-downword #up-down');
 let settingBtn = document.querySelector('#upword-downword')
 settingBtn.addEventListener('click', function (params) {
-    if (profileUl.style.top == '-26dvh' || settingBtn.style.rotate == '180deg') {
+    if (profileUl.style.top == '-35dvh' || settingBtn.style.rotate == '180deg') {
         profileUl.style.top = '0'
         arrow.style.transform = 'rotate(0deg)'
         settingBtn.style.transition = '0.5s'
         profileUl.style.transition = '0.5s'
     }
     else {
-        profileUl.style.top = '-26dvh'
+        profileUl.style.top = '-35dvh'
         arrow.style.transform = 'rotate(180deg)'
         settingBtn.style.transition = '0.5s'
         profileUl.style.transition = '0.5s'
