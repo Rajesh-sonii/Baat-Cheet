@@ -1,4 +1,5 @@
-const url='http://localhost:3000'
+//const url='http://localhost:3000'
+const url='https://baat-cheet-production.up.railway.app'
 // const url = process.env.APP_URL;
 let ul = document.getElementById('ul')
 let ul2 = document.getElementById('ul2')
