@@ -15,7 +15,7 @@ img1.addEventListener('click', function (params) {
     imgPrew.src = file;
 
 
-    uploadPhoto();
+    uploadPhoto(imgPrew.src);
 })
 
 let img2 = document.getElementById("img2")
@@ -23,7 +23,7 @@ img2.addEventListener('click', function (params) {
     imgPrew.src = "/images/chashmish-boy.jpg"
 
 
-    uploadPhoto();
+    uploadPhoto(imgPrew.src);
 })
 
 let img3 = document.getElementById("img3")
@@ -31,7 +31,7 @@ img3.addEventListener('click', function (params) {
     imgPrew.src = "/images/simple-boy.jpg"
 
 
-    uploadPhoto();
+    uploadPhoto(imgPrew.src);
 })
 
 let img4 = document.getElementById("img4")
@@ -39,7 +39,7 @@ img4.addEventListener('click', function (params) {
     imgPrew.src = "/images/chikna-ladka.png"
 
 
-    uploadPhoto();
+    uploadPhoto(imgPrew.src);
 })
 
 let img5 = document.getElementById("img5")
@@ -47,7 +47,7 @@ img5.addEventListener('click', function (params) {
     imgPrew.src = "/images/beard-man.png"
 
 
-    uploadPhoto();
+    uploadPhoto(imgPrew.src);
 })
 
 let img6 = document.getElementById("img6")
@@ -55,7 +55,7 @@ img6.addEventListener('click', function (params) {
     imgPrew.src = "/images/surprised-boy.jpg"
 
 
-    uploadPhoto();
+    uploadPhoto(imgPrew.src);
 })
 
 let img7 = document.getElementById("img7")
@@ -63,7 +63,7 @@ img7.addEventListener('click', function (params) {
     imgPrew.src = "/images/worried-boy.jpg"
 
 
-    uploadPhoto();
+    uploadPhoto(imgPrew.src);
 })
 
 let img8 = document.getElementById("img8")
@@ -71,7 +71,7 @@ img8.addEventListener('click', function (params) {
     imgPrew.src = "/images/happy-girl.jpg"
 
 
-    uploadPhoto();
+    uploadPhoto(imgPrew.src);
 })
 
 let img9 = document.getElementById("img9")
@@ -79,7 +79,7 @@ img9.addEventListener('click', function (params) {
     imgPrew.src = "/images/confident-girl-with-freckles.jpg"
 
 
-    uploadPhoto();
+    uploadPhoto(imgPrew.src);
 })
 
 let img10 = document.getElementById("img10")
@@ -87,7 +87,7 @@ img10.addEventListener('click', function (params) {
     imgPrew.src = "/images/simple-girl.jpg"
 
 
-    uploadPhoto();
+    uploadPhoto(imgPrew.src);
 })
 
 let img11 = document.getElementById("img11")
@@ -95,22 +95,22 @@ img11.addEventListener('click', function (params) {
     imgPrew.src = "/images/barbie-girl.jpg"
 
 
-    uploadPhoto();
+    uploadPhoto(imgPrew.src);
 })
 
 let img12 = document.getElementById("img12")
 img12.addEventListener('click', function (params) {
     imgPrew.src = "/images/young-girl.jpg"
 
-    uploadPhoto();
+    uploadPhoto(imgPrew.src);
 })
 
 
-function uploadPhoto() {
+function uploadPhoto(src) {
     fetch('https://baat-cheet-production.up.railway.app/upload-pic', {
         method: 'POST',
         headers: {
-            file: imgPrew.src
+            file: src
         }
     })
 }
