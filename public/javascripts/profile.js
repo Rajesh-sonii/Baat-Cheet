@@ -107,7 +107,7 @@ img12.addEventListener('click', function (params) {
 
 
 function uploadPhoto() {
-    fetch('http://localhost:3000/upload-pic', {
+    fetch('https://baat-cheet-production.up.railway.app/upload-pic', {
         method: 'POST',
         headers: {
             file: imgPrew.src
