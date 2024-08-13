@@ -8,14 +8,14 @@ let blockButton = false;
 let blockdiv = document.querySelectorAll('#block-div')
 let setting = document.querySelector('.setting')
 
-window.addEventListener('resize', () => {
-    const windowWidth = window.innerWidth;
-    // const navigation = document.querySelector('.navigation');
+// window.addEventListener('resize', () => {
+//     const windowWidth = window.innerWidth;
+//     // const navigation = document.querySelector('.navigation');
 
-    if ((windowWidth > 1024) || (windowWidth < 1025)) {
-        window.location.reload();
-    }
-});
+//     if ((windowWidth > 1024) || (windowWidth < 1025)) {
+//         window.location.reload();
+//     }
+// });
 
 
 document.body.addEventListener('click', ({ target }) => {
