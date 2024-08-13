@@ -196,12 +196,10 @@ router.post('/messages', isLoggedIn, async function (req, res, next) {
 // uploading a profile photo from the available avatar options 
 router.post('/upload-pic', isLoggedIn, async function (req, res) {
   const { file } = req.headers;
-  const name = file.split('3000');
+  const name = file.split('.app')[1];
   try {
-    const user = await userSchema.findOne({ username: req.session.passport.user });
-    const newUser = await userSchema.updateOne({ _id: user._id }, { $set: { image: name[1] } });
-
-    if (!newUser) return res.status(404).send('something went wrong!');
+    const user = await userSchema.findOneAndUpdate({username: req.session.passport.user}, {image: name});
+    if (!user) return res.status(404).send('something went wrong!');
   }
 
   catch (error) {
