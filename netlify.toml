@@ -1,2 +1,3 @@
-command = "npm start"
-  publish = "./bin.www"
+[build]
+  command = "npm start"
+  publish = "./"
