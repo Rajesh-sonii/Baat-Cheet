@@ -1548,7 +1548,7 @@ body {
         font-size: 20px;
     }
 body.keyboard-open #msg-box {
-        height: calc(86vh - 30dvh); /* Adjust height as needed */
+        height: calc(86dvh - 300px); /* Adjust height as needed */
         overflow-y: auto;
     }
 /*     #msg-box {
