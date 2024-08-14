@@ -897,3 +897,10 @@ function unblock(uid, uname) {
             }
         })
 }
+
+async function deleteAcc(){
+    const res = await fetch(`${url}/delete`, {method: 'POST'});
+    if(res.ok){
+        window.location.href = '/';
+    }
+}
