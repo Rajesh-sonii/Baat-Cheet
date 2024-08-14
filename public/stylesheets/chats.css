@@ -1514,7 +1514,7 @@ body {
     }
 
     #main-box #head {
-        position:sticky;
+        position:fixed;
         justify-content: space-between;
         display: flex;
         z-index: 999;
