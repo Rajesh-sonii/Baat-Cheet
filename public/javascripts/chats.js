@@ -489,20 +489,7 @@ async function sendMessage(message, value) {
     if (message.length <= 0 || message.split(" ").length == 0) {
         return;
     }
-    let data;
-    try {
-        const res = await fetch(`${url}/messages`, {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                message,
-                receiver_id,
-                sender_id
-            })
-        });
-
-        if (res) {
-            data = await res.json()
+    let data = {message,receiver_id,sender_id};
             const html = `
             <div id="outgoing-msg">
                 <div class="user-input">
@@ -512,12 +499,20 @@ async function sendMessage(message, value) {
 
             document.querySelector('.massanger').innerHTML += html;
             msgbox.scrollTo(0, msgbox.scrollHeight)
-        }
+            value.value = '';
+
+    socket.emit('newChat', data);
+
+    try {
+        const res = await fetch(`${url}/messages`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
     } catch (error) {
         console.log('something went wrong, please try again in some time');
     }
-    value.value = '';
-    socket.emit('newChat', data);
 }
 
 // defining the namespace using socket.io 
