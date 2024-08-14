@@ -34,12 +34,16 @@ window.addEventListener('resize', () => {
 });
 function adjustLayoutForKeyboard() {
     const messageDiv = document.getElementById('msg-box');
+    const messageDivOrig = document.getElementById('msg-box');
     
     // Update the height of the message area
     if (document.body.classList.contains('keyboard-open')) {
         messageDiv.style.height = `${window.innerHeight - 300}px`; // Adjust '300px' as needed
+        messageDivOrig.style.height = `${window.innerHeight - 300}px`; // Adjust '300px' as needed
+
     } else {
-        messageDiv.style.height = ''; // Reset to default height
+        messageDiv.style.height = '86dvh'; // Reset to default height
+        messageDivOrig.style.height = '86dvh'; // Reset to default height
     }
 }
 
