@@ -32,6 +32,28 @@ window.addEventListener('resize', () => {
         document.body.classList.remove('keyboard-open');
     }
 });
+function adjustLayoutForKeyboard() {
+    const messageDiv = document.getElementById('msg-box');
+    
+    // Update the height of the message area
+    if (document.body.classList.contains('keyboard-open')) {
+        messageDiv.style.height = `${window.innerHeight - 300}px`; // Adjust '300px' as needed
+    } else {
+        messageDiv.style.height = ''; // Reset to default height
+    }
+}
+
+// Call adjustLayoutForKeyboard on resize
+window.addEventListener('resize', adjustLayoutForKeyboard);
+function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+}
+
+window.addEventListener('resize', debounce(adjustLayoutForKeyboard, 200));
 
 
 document.body.addEventListener('click', ({ target }) => {
