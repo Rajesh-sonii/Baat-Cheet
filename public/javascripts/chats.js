@@ -1,4 +1,4 @@
-//const url='http://localhost:3000'
+// const url = 'http://localhost:3000'
 const url='https://baat-cheet-production.up.railway.app'
 // const url = process.env.APP_URL;
 let ul = document.getElementById('ul')
@@ -16,46 +16,6 @@ let setting = document.querySelector('.setting')
 //         window.location.reload();
 //     }
 // });
-
-//function or keyboard open close
-// Store the initial viewport height
-let initialHeight = window.innerHeight;
-
-// Listen for resize events
-window.addEventListener('resize', () => {
-    let newHeight = window.innerHeight;
-
-    // Check if the height has decreased, indicating the keyboard is likely visible
-    if (newHeight < initialHeight) {
-        document.body.classList.add('keyboard-open');
-    } else {
-        document.body.classList.remove('keyboard-open');
-    }
-});
-function adjustLayoutForKeyboard() {
-    const messageDiv = document.getElementById('main-box');
-    
-    
-    // Update the height of the message area
-    if (document.body.classList.contains('keyboard-open')) {
-        messageDiv.style.height = `${window.innerHeight - 300}px`; // Adjust '300px' as needed
-
-    } else {
-        messageDiv.style.height = '100dvh'; // Reset to default height
-    }
-}
-
-// Call adjustLayoutForKeyboard on resize
-window.addEventListener('resize', adjustLayoutForKeyboard);
-function debounce(func, wait) {
-    let timeout;
-    return function(...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-}
-
-window.addEventListener('resize', debounce(adjustLayoutForKeyboard, 200));
 
 
 document.body.addEventListener('click', ({ target }) => {
@@ -102,8 +62,8 @@ setting.addEventListener('click', function (params) {
 let theme = document.getElementById('theme-btn')
 theme.addEventListener('click', function (params) {
     if (ul2.style.display == 'none') {
-        ul2.style.display = 'flex'
         dark.innerText = "Dark"
+        ul2.style.display = 'flex'
     }
     else {
         ul2.style.display = 'none'
@@ -120,8 +80,8 @@ theme2.addEventListener('click', function (params) {
         themeIcon2.style.display = 'flex'
     }
     else {
-        themeIcon1.style.display = 'flex'
         themeIcon2.style.display = 'none'
+        themeIcon1.style.display = 'flex'
     }
 })
 
@@ -217,7 +177,7 @@ function fetchMsg(rec_id, uname, elem) {
     mainBox.style.display = 'flex'
 
     const div = document.querySelector(`.${uname}`).cloneNode(true)
-    div.removeChild(div.children[div.children.length-1])
+    div.removeChild(div.children[div.children.length - 1])
     document.querySelector('#msg-box-name').innerHTML = div.innerHTML;
     msgbox.innerHTML = "";
 
@@ -271,16 +231,16 @@ let recivedRequest = document.getElementById("recived")
 let buttonSentRequest = document.getElementById("sent-recived")
 buttonSentRequest.addEventListener('click', function (params) {
     if (sentRequest.style.display == "none" && recivedRequest.style.display == "flex") {
-        sentRequest.style.display = "flex"
         recivedRequest.style.display = "none"
         buttonSentRequest.style.rotate = '180deg'
         buttonSentRequest.style.transition = '0.5s'
+        sentRequest.style.display = "flex"
     }
     else {
         sentRequest.style.display = "none"
-        recivedRequest.style.display = "flex"
         buttonSentRequest.style.rotate = '0deg'
         buttonSentRequest.style.transition = '0.5s'
+        recivedRequest.style.display = "flex"
     }
 
 })
@@ -337,9 +297,9 @@ function bgRemover(white) {
 // for showing the message tab
 msgOpen.addEventListener('click', function () {
     reqBox.style.display = 'none'
-    chatsshow.style.display = "flex"
     profilePanel.style.display = "none"
     mobiSearchPanel.style.display = "none"
+    chatsshow.style.display = "flex"
 
     // for removing the red dot from the message box downside
     document.querySelector('#msg-req-search #msg-open #red-dot').style.display = 'none';
@@ -355,10 +315,10 @@ msgOpen.addEventListener('click', function () {
 })
 // for showing the requests tab
 reqOpen.addEventListener('click', function () {
-    reqBox.style.display = 'flex'
     chatsshow.style.display = "none"
     profilePanel.style.display = "none"
     mobiSearchPanel.style.display = "none"
+    reqBox.style.display = 'flex'
 
     if (white != 2) {
         bgRemover(white);
@@ -394,8 +354,8 @@ mobiSearch.addEventListener('click', function (params) {
 profile.addEventListener('click', function () {
     reqBox.style.display = 'none'
     chatsshow.style.display = "none"
-    profilePanel.style.display = "flex"
     mobiSearchPanel.style.display = "none"
+    profilePanel.style.display = "flex"
 
     if (white != 4) {
         bgRemover(white);
@@ -529,17 +489,17 @@ async function sendMessage(message, value) {
     if (message.length <= 0 || message.split(" ").length == 0) {
         return;
     }
-    let data = {message,receiver_id,sender_id};
-            const html = `
+    let data = { message, receiver_id, sender_id };
+    const html = `
             <div id="outgoing-msg">
                 <div class="user-input">
                     <p>${data.message}</p>
                 </div>
             </div>`;
 
-            document.querySelector('.massanger').innerHTML += html;
-            msgbox.scrollTo(0, msgbox.scrollHeight)
-            value.value = '';
+    document.querySelector('.massanger').innerHTML += html;
+    msgbox.scrollTo(0, msgbox.scrollHeight)
+    value.value = '';
 
     socket.emit('newChat', data);
 
@@ -623,7 +583,6 @@ socket.on('loadNewChat', (data) => {
     document.querySelectorAll('#new-msg-dot').forEach(single => {
         if (single.classList.contains(`${data.sender_id}`)) {
             single.style.display = 'block';
-            console.log('helo')
         }
     })
 
@@ -679,6 +638,7 @@ const debouncedSearch = debounce(async (value, container) => {
                     <i class="fa-solid fa-user-check ${user.username}" id="following"></i>
                  </div>`;
         });
+        container.innerHTML = html;
     }
     else {
         let p = document.createElement('p');
@@ -686,24 +646,24 @@ const debouncedSearch = debounce(async (value, container) => {
         p.textContent = "No new user found for the query!";
         html = p.outerHTML;
     }
-    container.innerHTML = html;
 
-}, 1000); // Adjust the delay as needed
+}, 500); // Adjust the delay as needed
 
 // searching for a user
 document.querySelector('#input').addEventListener('input', async function (event) {
     const value = event.target.value;
     let searchBox = document.getElementById('search-friends')
-    let container = document.querySelector('#search-friends');
+    // let container = document.querySelector('#search-friends');
     if (value != "") {
         searchBox.style.display = 'flex'
 
         // making a debounced api call which will evaluate after 1 second 
-        debouncedSearch(value, container);
+        debouncedSearch(value, searchBox);
 
     }
     else {
         searchBox.style.display = 'none'
+        searchBox.innerHTML = "";
     }
 })
 
@@ -724,6 +684,13 @@ document.querySelector('#mobi-input').addEventListener('input', async function (
 
 // handling the event to fire when the user clicks on the sendRequest button
 async function sendReq(receiver_id) {
+    // for changing the follow icon to following icon when the user clicks on it 
+    const follow = document.querySelector(`#${data.tusername}`)
+    const following = document.querySelector(`.${data.tusername}`)
+    following.style.display = "flex"
+    follow.style.display = "none"
+
+    // making a friend request and updating it on the server
     const res = await fetch(`${url}/makefriend`, {
         method: "POST",
         headers: { receiver_id }
@@ -731,15 +698,6 @@ async function sendReq(receiver_id) {
 
     const data = await res.json();
     if (data) {
-        const follow = document.querySelector(`#${data.tusername}`)
-        // for changing the follow icon to following icon when the user clicks on it 
-        const following = document.querySelector(`.${data.tusername}`)
-
-        following.style.display = "flex"
-        follow.style.display = "none"
-
-        socket.emit('requestSent', data);
-
         const newReq = `<div class="friends-req">
                             <div class="pending-req">
                                 <img src="${data.timage}" alt="">
@@ -749,14 +707,16 @@ async function sendReq(receiver_id) {
                             </div>
                             <div class="req-icon" id="${data.tusername}">
                                 <i id="cancelled"
-                                    onclick="cancelReq('${data.rid}', '${data.tusername}')"
-                                    class="fa-regular fa-circle-xmark"></i>
+                                onclick="cancelReq('${data.rid}', '${data.tusername}')"
+                                class="fa-regular fa-circle-xmark"></i>
                             </div>
                             <div class="${data.tusername}" style="display: none;">
-                                <p class="cancelled" style="display: none;">Cancelled</p>
+                            <p class="cancelled" style="display: none;">Cancelled</p>
                             </div>
-                        </div>`
+                            </div>`
         document.querySelector('#sent-requests').innerHTML += newReq;
+
+        socket.emit('requestSent', data);
     }
 }
 
@@ -797,52 +757,51 @@ socket.on('sentFriendRequest', (data) => {
 // function for acepting or rejecting the friend request
 async function acceptReject(status, id, uname) {
 
-    if ((status == 'accepted' || status == 'rejected') && id != undefined) {
-        let data;
-        try {
-            const res = await fetch(`${url}/checkoutRequest`,
-                {
-                    method: 'POST',
-                    body: JSON.stringify({ acceptReject: status, request_id: id }),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
+    // updating the same elemnt on the frontend
+    const btns = document.querySelector(`#${data.tusername}`);
+    btns.style.display = 'none';
+    const txts = document.querySelector(`.${data.tusername}`);
+    txts.style.display = 'block';
+    if (status == 'accepted') {
+        document.querySelector(`.${data.tusername} .friends`).style.display = 'block';
 
-            if (!res.ok) {
-                return new Error('Network response was not ok');
+        const newFrnd = `<div id="display-user-column" data-long-press-delay="500" class="display-user-column">
+                            <div class="${data.tusername}" id="display-user" onclick="fetchMsg('${data.tid}', '${data.tusername}', this)">
+                                <img src="${data.timage}" alt="">
+                                <span id="user-name">
+                                ${data.tusername}
+                                </span>
+                            </div>
+                            <div id="block-div" class="${data.tusername}">
+                                <button onclick="block('${data.tid}', '${data.tusername}')">
+                                    <i class="fa-solid fa-user-slash"></i>
+                                    block
+                                </button>
+                            </div>
+                         </div>`;
+
+        chatsshow.innerHTML += newFrnd;
+
+        if ((status == 'accepted' || status == 'rejected') && id != undefined) {
+            let data;
+            try {
+                const res = await fetch(`${url}/checkoutRequest`,
+                    {
+                        method: 'POST',
+                        body: JSON.stringify({ acceptReject: status, request_id: id }),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                if (!res.ok) {
+                    return new Error('Network response was not ok');
+                }
+                data = await res.json();
+
+            } catch (error) {
+                return console.error('Error:', error);
             }
-            data = await res.json();
-
-        } catch (error) {
-            return console.error('Error:', error);
-        }
-
-        // updating the same elemnt on the frontend
-        const btns = document.querySelector(`#${data.tusername}`);
-        btns.style.display = 'none';
-        const txts = document.querySelector(`.${data.tusername}`);
-        txts.style.display = 'block';
-        if (status == 'accepted') {
-            document.querySelector(`.${data.tusername} .friends`).style.display = 'block';
-
-            const newFrnd = `<div id="display-user-column" data-long-press-delay="500" class="display-user-column">
-                                <div class="${data.tusername}" id="display-user" onclick="fetchMsg('${data.tid}', '${data.tusername}', this)">
-                                        <img src="${data.timage}" alt="">
-                                        <span id="user-name">
-                                            ${data.tusername}
-                                        </span>
-                                    </div>
-                                    <div id="block-div" class="${data.tusername}">
-                                        <button onclick="block('${data.tid}', '${data.tusername}')">
-                                            <i class="fa-solid fa-user-slash"></i>
-                                            block
-                                        </button>
-                                    </div>
-                            </div>`;
-
-            chatsshow.innerHTML += newFrnd;
-
             socket.emit('accepted', data);
         }
         else {
@@ -874,6 +833,17 @@ socket.on('newFriend', (data) => {
 // function for cancelling the sent friendRequest
 async function cancelReq(id, uname) {
 
+    // updating the same elemnt on the frontend
+    const btns = document.querySelector(`#${uname}`);
+    btns.style.display = 'none';
+
+    const txts = document.querySelector(`.${uname}`);
+    txts.style.display = 'block';
+
+    document.querySelector(`.${uname} .cancelled`).style.display = 'block';
+
+
+    // the backend part
     try {
         const res = await fetch(`${url}/cancelRequest`,
             {
@@ -891,15 +861,6 @@ async function cancelReq(id, uname) {
     } catch (error) {
         return console.error('Error:', error);
     }
-
-    // updating the same elemnt on the frontend
-    const btns = document.querySelector(`#${uname}`);
-    btns.style.display = 'none';
-
-    const txts = document.querySelector(`.${uname}`);
-    txts.style.display = 'block';
-
-    document.querySelector(`.${uname} .cancelled`).style.display = 'block';
 }
 
 // for showing the loggin-out screen when the user logs-out
@@ -939,9 +900,9 @@ function unblock(uid, uname) {
         })
 }
 
-async function deleteAcc(){
-    const res = await fetch(`${url}/delete`, {method: 'POST'});
-    if(res.ok){
+async function deleteAcc() {
+    const res = await fetch(`${url}/delete`, { method: 'POST' });
+    if (res.ok) {
         window.location.href = '/';
     }
 }
