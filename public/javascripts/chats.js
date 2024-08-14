@@ -634,7 +634,6 @@ const debouncedSearch = debounce(async (value, container) => {
                     <i class="fa-solid fa-user-check ${user.username}" id="following"></i>
                  </div>`;
         });
-        container.innerHTML = html;
     }
     else {
         let p = document.createElement('p');
@@ -642,6 +641,7 @@ const debouncedSearch = debounce(async (value, container) => {
         p.textContent = "No new user found for the query!";
         html = p.outerHTML;
     }
+        container.innerHTML = html;
 
 }, 500); // Adjust the delay as needed
 
