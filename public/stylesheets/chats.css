@@ -13,10 +13,10 @@ body {
     --third-color: rgb(0, 225, 255);
     --forth-color: black;
     --fifth-color: rgb(0, 152, 172);
-    --sixth-color: #748D92;
+    --sixth-color: #4d838e;
     --seach-f-color: rgba(255, 255, 255, 0.792);
     --seventh-color: white;
-    --eight--color: #748D92;
+    --eight--color: #4d838e;
 }
 
 .color1 {
@@ -24,11 +24,11 @@ body {
     --secondary-color: rgb(10, 1, 45);
     --third-color: rgb(0, 4, 255);
     --forth-color: white;
-    --fifth-color: #124E66;
-    --sixth-color: #124E66;
+    --fifth-color: #005779;
+    --sixth-color: #005779;
     --seach-f-color: rgba(0, 0, 0, 0.769);
     --seventh-color: #212A31;
-    --eight--color: rgb(32, 32, 32);
+    --eight--color: #1c1b1b;
 
 }
 
