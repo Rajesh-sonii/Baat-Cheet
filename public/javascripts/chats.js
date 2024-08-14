@@ -176,7 +176,9 @@ function fetchMsg(rec_id, uname, elem) {
     defaultscreen.style.display = "none"
     mainBox.style.display = 'flex'
 
-    document.querySelector('#msg-box-name').innerHTML = document.querySelector(`.${uname}`).innerHTML;
+    const div = document.querySelector(`.${uname}`).cloneNode(true)
+    div.removeChild(div.children[div.children.length-1])
+    document.querySelector('#msg-box-name').innerHTML = div.innerHTML;
     msgbox.innerHTML = "";
 
     socket.emit('loadChats', { sender_id, receiver_id });
@@ -421,56 +423,11 @@ const textArea = document.querySelector('#message')
 //     }
 // }
 
-document.getElementById("message").addEventListener("keypress", async (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-
-        // e.currentTarget.closest("form").submit();
-        // const message = document.querySelector('#message').value;
-        const message = e.target.value;
-        let data;
-
-        // if (message.length <= 0 || message.split(" ").length > 0) {
-        //     return;
-        // }
-        try {
-            const res = await fetch(`${url}/messages`, {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    message,
-                    receiver_id,
-                    sender_id
-                })
-            });
-
-            if (res) {
-                data = await res.json()
-                const html = `
-                <div id="outgoing-msg">
-                    <div class="user-input">
-                        <p>${data.message}</p>
-                    </div>
-                </div>`;
-
-                document.querySelector('.massanger').innerHTML += html;
-                msgbox.scrollTo(0, msgbox.scrollHeight)
-            }
-        } catch (error) {
-            console.log('something went wrong, please try again in some time');
-        }
-
-        // document.getElementById('message').value = '';
-        e.target.value = '';
-        socket.emit('newChat', data);
-    }
-});
-
 // for disable/enable the send button
+const sendbtn = document.querySelector('#text-button');
 const sendbtnphone = document.querySelector('#icon-send-button button');
 textArea.addEventListener('input', (event) => {
     const message = event.target.value.trim();
-    const sendbtn = document.querySelector('#text-button');
     if (message.length <= 0 || message.split(' ').length <= 0) {
         sendbtn.disabled = true;
         sendbtnphone.disabled = true;
@@ -480,51 +437,82 @@ textArea.addEventListener('input', (event) => {
         sendbtnphone.disabled = false;
     }
 });
-// for mobile
-sendbtnphone.addEventListener("click", async (e) => {
-    // if (e.key === "Enter" && !e.shiftKey) {
+
+// when the user presses enter
+textArea.addEventListener("keypress", async (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
 
         // e.currentTarget.closest("form").submit();
         // const message = document.querySelector('#message').value;
         const message = e.target.value;
-        let data;
 
-        // if (message.length <= 0 || message.split(" ").length > 0) {
-        //     return;
-        // }
-        try {
-            const res = await fetch(`${url}/messages`, {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    message,
-                    receiver_id,
-                    sender_id
-                })
-            });
+        sendMessage(message, e.target);
 
-            if (res) {
-                data = await res.json()
-                const html = `
-                <div id="outgoing-msg">
-                    <div class="user-input">
-                        <p>${data.message}</p>
-                    </div>
-                </div>`;
-
-                document.querySelector('.massanger').innerHTML += html;
-                msgbox.scrollTo(0, msgbox.scrollHeight)
-            }
-        } catch (error) {
-            console.log('something went wrong, please try again in some time');
-        }
-
-        // document.getElementById('message').value = '';
-        e.target.value = '';
-        socket.emit('newChat', data);
-    // }
+        // e.target.value = '';
+        // socket.emit('newChat', data);
+    }
 });
+
+// for mobile devices
+sendbtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+
+    // const message = document.querySelector('#message').value;
+    const message = textArea.value;
+    sendMessage(message, textArea);
+
+    // document.querySelector('#message').value = '';
+    // textArea.value = '';
+    // socket.emit('newChat', data);
+})
+
+sendbtnphone.addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    // const message = document.querySelector('#message').value;
+    const message = textArea.value;
+    sendMessage(message, textArea);
+
+    // document.querySelector('#message').value = '';
+    // textArea.value = '';
+    // socket.emit('newChat', data);
+});
+
+async function sendMessage(message, value) {
+    if (message.length <= 0 || message.split(" ").length == 0) {
+        return;
+    }
+    let data;
+    try {
+        const res = await fetch(`${url}/messages`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                message,
+                receiver_id,
+                sender_id
+            })
+        });
+
+        if (res) {
+            data = await res.json()
+            const html = `
+            <div id="outgoing-msg">
+                <div class="user-input">
+                    <p>${data.message}</p>
+                </div>
+            </div>`;
+
+            document.querySelector('.massanger').innerHTML += html;
+            msgbox.scrollTo(0, msgbox.scrollHeight)
+        }
+    } catch (error) {
+        console.log('something went wrong, please try again in some time');
+    }
+    value.value = '';
+    socket.emit('newChat', data);
+}
 
 // defining the namespace using socket.io 
 var socket = io('/user-namespace');
