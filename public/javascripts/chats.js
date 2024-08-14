@@ -168,7 +168,6 @@ function fetchMsg(rec_id, uname, elem) {
     // if(dot.style.display == 'flex'){
     //     dot.style.display = 'none';
     // }
-    // console.log(elem.div)
     elem.lastElementChild.style.display = 'none';
 
     receiver_id = rec_id;
@@ -551,7 +550,6 @@ var socket = io('/user-namespace');
 //             msgbox.scrollTo(0, msgbox.scrollHeight)
 //         }
 //     } catch (error) {
-//         console.log('something went wrong, please try again in some time');
 //     }
 
 //     document.getElementById('message').value = '';
@@ -589,8 +587,6 @@ socket.on('loadNewChat', (data) => {
 
     // const id = document.querySelector(`.${data.receiver_id}`);
     // const id2 = document.querySelector(`${data.sender_id}`);
-    // console.log(id);
-    // console.log(id2);
     // document.querySelector(`#${data.sender_id}`).innerHTML += '<div id="new-msg-dot"></div>';
 })
 
@@ -684,11 +680,6 @@ document.querySelector('#mobi-input').addEventListener('input', async function (
 
 // handling the event to fire when the user clicks on the sendRequest button
 async function sendReq(receiver_id) {
-    // for changing the follow icon to following icon when the user clicks on it 
-    const follow = document.querySelector(`#${data.tusername}`)
-    const following = document.querySelector(`.${data.tusername}`)
-    following.style.display = "flex"
-    follow.style.display = "none"
 
     // making a friend request and updating it on the server
     const res = await fetch(`${url}/makefriend`, {
@@ -715,6 +706,12 @@ async function sendReq(receiver_id) {
                             </div>
                             </div>`
         document.querySelector('#sent-requests').innerHTML += newReq;
+
+        // for changing the follow icon to following icon when the user clicks on it 
+        const follow = document.querySelector(`#${data.tusername}`)
+        const following = document.querySelector(`.${data.tusername}`)
+        following.style.display = "flex"
+        follow.style.display = "none"
 
         socket.emit('requestSent', data);
     }
@@ -757,15 +754,35 @@ socket.on('sentFriendRequest', (data) => {
 // function for acepting or rejecting the friend request
 async function acceptReject(status, id, uname) {
 
-    // updating the same elemnt on the frontend
-    const btns = document.querySelector(`#${data.tusername}`);
-    btns.style.display = 'none';
-    const txts = document.querySelector(`.${data.tusername}`);
-    txts.style.display = 'block';
-    if (status == 'accepted') {
-        document.querySelector(`.${data.tusername} .friends`).style.display = 'block';
+    if ((status == 'accepted' || status == 'rejected') && id != undefined) {
+        let data;
+        try {
+            const res = await fetch(`${url}/checkoutRequest`,
+                {
+                    method: 'POST',
+                    body: JSON.stringify({ acceptReject: status, request_id: id }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
 
-        const newFrnd = `<div id="display-user-column" data-long-press-delay="500" class="display-user-column">
+            if (!res.ok) {
+                return new Error('Network response was not ok');
+            }
+            data = await res.json();
+
+        } catch (error) {
+            return console.error('Error:', error);
+        }
+        // updating the same elemnt on the frontend
+        const btns = document.querySelector(`#${data.tusername}`);
+        btns.style.display = 'none';
+        const txts = document.querySelector(`.${data.tusername}`);
+        txts.style.display = 'block';
+        if (status == 'accepted') {
+            document.querySelector(`.${data.tusername} .friends`).style.display = 'block';
+
+            const newFrnd = `<div id="display-user-column" data-long-press-delay="500" class="display-user-column">
                             <div class="${data.tusername}" id="display-user" onclick="fetchMsg('${data.tid}', '${data.tusername}', this)">
                                 <img src="${data.timage}" alt="">
                                 <span id="user-name">
@@ -780,33 +797,14 @@ async function acceptReject(status, id, uname) {
                             </div>
                          </div>`;
 
-        chatsshow.innerHTML += newFrnd;
+            chatsshow.innerHTML += newFrnd;
 
-        if ((status == 'accepted' || status == 'rejected') && id != undefined) {
-            let data;
-            try {
-                const res = await fetch(`${url}/checkoutRequest`,
-                    {
-                        method: 'POST',
-                        body: JSON.stringify({ acceptReject: status, request_id: id }),
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    });
-
-                if (!res.ok) {
-                    return new Error('Network response was not ok');
-                }
-                data = await res.json();
-
-            } catch (error) {
-                return console.error('Error:', error);
-            }
             socket.emit('accepted', data);
         }
         else {
             document.querySelector(`.${uname} .rejected`).style.display = 'block';
         }
+
     }
 }
 
