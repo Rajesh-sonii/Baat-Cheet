@@ -1559,7 +1559,7 @@ body {
         margin-top: 18%;
         top: 0;
         width: 90%;
-        height: auto;
+        height: 83dvh;
         position: fixed;
         background-color: transparent;
         overflow: scroll;
