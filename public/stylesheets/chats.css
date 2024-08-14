@@ -1254,7 +1254,7 @@ body {
         border: none;
         font-size: 25px;
         background: transparent;
-        /* color: var(--forth-color); */
+        color: var(--forth-color); 
 
     }
 
