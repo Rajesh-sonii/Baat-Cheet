@@ -1547,17 +1547,14 @@ body {
     #msg-box-name span {
         font-size: 20px;
     }
-body.keyboard-open #msg-box {
-        height: calc(86dvh - 300px); /* Adjust height as needed */
+body.keyboard-open #main-box {
+        height: calc(100dvh - 300px); /* Adjust height as needed */
         overflow-y: auto;
     }
-    body.keyboard-open #massanger {
-        height: calc(86dvh - 300px); /* Adjust height as needed */
-        overflow-y: auto;
+    
+    #msg-box {
+        height: 83dvh;
     }
-/*     #msg-box {
-        height: 86dvh;
-    } */
 
     .massanger {
         /* margin: 20px; */
@@ -1565,7 +1562,7 @@ body.keyboard-open #msg-box {
         margin-top: 18%;
         top: 0;
         width: 90%;
-        height: 86dvh;
+        height: 83dvh;
         position: fixed;
         background-color: transparent;
         overflow: scroll;
