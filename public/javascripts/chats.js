@@ -17,6 +17,22 @@ let setting = document.querySelector('.setting')
 //     }
 // });
 
+//function or keyboard open close
+// Store the initial viewport height
+let initialHeight = window.innerHeight;
+
+// Listen for resize events
+window.addEventListener('resize', () => {
+    let newHeight = window.innerHeight;
+
+    // Check if the height has decreased, indicating the keyboard is likely visible
+    if (newHeight < initialHeight) {
+        document.body.classList.add('keyboard-open');
+    } else {
+        document.body.classList.remove('keyboard-open');
+    }
+});
+
 
 document.body.addEventListener('click', ({ target }) => {
     if ((!target.classList.contains('ul') &&
