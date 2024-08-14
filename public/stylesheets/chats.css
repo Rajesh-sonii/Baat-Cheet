@@ -1547,10 +1547,13 @@ body {
     #msg-box-name span {
         font-size: 20px;
     }
-
-    #msg-box {
-        height: 86dvh;
+body.keyboard-open #msg-box {
+        height: calc(86vh - 30dvh); /* Adjust height as needed */
+        overflow-y: auto;
     }
+/*     #msg-box {
+        height: 86dvh;
+    } */
 
     .massanger {
         /* margin: 20px; */
