@@ -1550,7 +1550,7 @@ body {
     }
     
     #msg-box {
-        height: calc(83dvh - 300px); /* Adjust height as needed */
+        height:auto;
     }
 
     .massanger {
@@ -1559,7 +1559,7 @@ body {
         margin-top: 18%;
         top: 0;
         width: 90%;
-        height: 83dvh;
+        height: auto;
         position: fixed;
         background-color: transparent;
         overflow: scroll;
