@@ -1294,7 +1294,7 @@ body {
         backdrop-filter: blur(20px);
         align-items: center;
         justify-content: center;
-        color: var(--seach-f-color);
+        color: var(--forth-color); 
         margin: auto;
         top: 50%;
         right: 20%;
@@ -1303,6 +1303,7 @@ body {
     }
 
     #logout-popup span {
+        margin-top:5px;
         scale: 3;
     }
 
