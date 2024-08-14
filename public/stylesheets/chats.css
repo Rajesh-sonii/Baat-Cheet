@@ -1555,7 +1555,7 @@ body {
         margin-top: 18%;
         top: 0;
         width: 90%;
-        height: 85dvh;
+        height: 83dvh;
         position: fixed;
         background-color: transparent;
         overflow: scroll;
@@ -1663,10 +1663,12 @@ body {
     #message-form #icon-send-button button {
         border: none;
         border-radius: 50%;
+        background: transparent;
+        color: var(--search-f-color);
     }
 
     #message-form #icon-send-button button:disabled {
-        background-color: white;
+        background-color: transparent;
     }
 
 }
