@@ -1561,7 +1561,7 @@ body.keyboard-open #msg-box {
         margin-top: 18%;
         top: 0;
         width: 90%;
-        height: 83dvh;
+        height: 100%;
         position: fixed;
         background-color: transparent;
         overflow: scroll;
