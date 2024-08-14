@@ -327,7 +327,7 @@ reqOpen.addEventListener('click', function () {
     // document.querySelector('#req-open i').style = 'color: black;'
 
     // for hiding the red Dot from it
-    // const redDot = document.querySelector('#msg-req-search #req-open #red-dot');
+    const redDot = document.querySelector('#msg-req-search #req-open #red-dot');
     // if (redDot.style.display == 'flex') {
     redDot.style.display = 'none';
     // }
@@ -467,10 +467,10 @@ document.getElementById("message").addEventListener("keypress", async (e) => {
 });
 
 // for disable/enable the send button
+const sendbtnphone = document.querySelector('#icon-send-button button');
 textArea.addEventListener('input', (event) => {
     const message = event.target.value.trim();
     const sendbtn = document.querySelector('#text-button');
-    const sendbtnphone = document.querySelector('#icon-send-button button');
     if (message.length <= 0 || message.split(' ').length <= 0) {
         sendbtn.disabled = true;
         sendbtnphone.disabled = true;
@@ -478,6 +478,51 @@ textArea.addEventListener('input', (event) => {
     else {
         sendbtn.disabled = false;
         sendbtnphone.disabled = false;
+    }
+});
+// for mobile
+sendbtnphone.addEventListener("keypress", async (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+
+        // e.currentTarget.closest("form").submit();
+        // const message = document.querySelector('#message').value;
+        const message = e.target.value;
+        let data;
+
+        // if (message.length <= 0 || message.split(" ").length > 0) {
+        //     return;
+        // }
+        try {
+            const res = await fetch(`${url}/messages`, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    message,
+                    receiver_id,
+                    sender_id
+                })
+            });
+
+            if (res) {
+                data = await res.json()
+                const html = `
+                <div id="outgoing-msg">
+                    <div class="user-input">
+                        <p>${data.message}</p>
+                    </div>
+                </div>`;
+
+                document.querySelector('.massanger').innerHTML += html;
+                msgbox.scrollTo(0, msgbox.scrollHeight)
+            }
+        } catch (error) {
+            console.log('something went wrong, please try again in some time');
+        }
+
+        // document.getElementById('message').value = '';
+        e.target.value = '';
+        socket.emit('newChat', data);
     }
 });
 
@@ -753,7 +798,7 @@ async function acceptReject(status, id, uname) {
             document.querySelector(`.${data.tusername} .friends`).style.display = 'block';
 
             const newFrnd = `<div id="display-user-column" data-long-press-delay="500" class="display-user-column">
-                                <div class="${data.tusername}" id="display-user" onclick="fetchMsg('${data.tid}', '${data.tusername}')">
+                                <div class="${data.tusername}" id="display-user" onclick="fetchMsg('${data.tid}', '${data.tusername}', this)">
                                         <img src="${data.timage}" alt="">
                                         <span id="user-name">
                                             ${data.tusername}
@@ -780,7 +825,7 @@ async function acceptReject(status, id, uname) {
 // catching the event of getting a new friend request
 socket.on('newFriend', (data) => {
     const newFrnd = `<div id="display-user-column" data-long-press-delay="500" class="display-user-column">
-                                <div class='${data.username}' id="display-user" onclick="fetchMsg('${data.id}', '${data.username}')">
+                                <div class='${data.username}' id="display-user" onclick="fetchMsg('${data.id}', '${data.username}', this)">
                                     <img src="${data.image}" alt="">
                                     <span id="user-name">
                                         ${data.username}
