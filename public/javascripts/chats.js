@@ -481,8 +481,8 @@ textArea.addEventListener('input', (event) => {
     }
 });
 // for mobile
-sendbtnphone.addEventListener("keypress", async (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+sendbtnphone.addEventListener("click", async (e) => {
+    // if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
 
         // e.currentTarget.closest("form").submit();
@@ -523,7 +523,7 @@ sendbtnphone.addEventListener("keypress", async (e) => {
         // document.getElementById('message').value = '';
         e.target.value = '';
         socket.emit('newChat', data);
-    }
+    // }
 });
 
 // defining the namespace using socket.io 
