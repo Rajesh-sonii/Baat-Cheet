@@ -317,6 +317,20 @@ router.post('/unblock', isLoggedIn, async function (req, res) {
   }
 })
 
+// for deleting a user
+router.post('/delete', async function(req, res){
+  try {
+    const user = await userSchema.findOneAndDelete({ username: req.session.passport.user });
+    console.log(user)
+    if(!user){
+      throw new error('error');
+    }
+    return res.status(200).send('success');
+  } catch (error) {
+    return res.status(500).send("Something went wrong!");
+  }
+})
+
 // checking if the user is logged-in or not
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
