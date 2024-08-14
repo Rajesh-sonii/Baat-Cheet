@@ -467,17 +467,23 @@ sendbtn.addEventListener('click', async (e) => {
     // socket.emit('newChat', data);
 })
 
-sendbtnphone.addEventListener("click", async (e) => {
-    e.preventDefault();
+// sendbtnphone.addEventListener("click", async (e) => {
+//     e.preventDefault();
 
-    // const message = document.querySelector('#message').value;
+//     // const message = document.querySelector('#message').value;
+//     const message = textArea.value;
+//     sendMessage(message, textArea);
+
+//     // document.querySelector('#message').value = '';
+//     // textArea.value = '';
+//     // socket.emit('newChat', data);
+// });
+sendbtnphone.addEventListener("touchend", (e) => {
+    e.preventDefault();
+    //functions for the Button need to be called here
     const message = textArea.value;
     sendMessage(message, textArea);
-
-    // document.querySelector('#message').value = '';
-    // textArea.value = '';
-    // socket.emit('newChat', data);
-});
+})
 
 async function sendMessage(message, value) {
     if (message.length <= 0 || message.split(" ").length == 0) {
