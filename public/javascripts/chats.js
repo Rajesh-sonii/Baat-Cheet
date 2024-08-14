@@ -708,8 +708,8 @@ async function sendReq(receiver_id) {
         document.querySelector('#sent-requests').innerHTML += newReq;
 
         // for changing the follow icon to following icon when the user clicks on it 
-        const follow = document.querySelector(`#${data.tusername}`)
-        const following = document.querySelector(`.${data.tusername}`)
+       const follow = document.querySelector(`.searched-user #${data.tusername}`)
+        const following = document.querySelector(`.searched-user .${data.tusername}`)
         following.style.display = "flex"
         follow.style.display = "none"
 
