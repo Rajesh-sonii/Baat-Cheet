@@ -1506,7 +1506,7 @@ body {
     #main-box {
         z-index: 999;
         width: 100%;
-        height: calc(100dvh - 300px); /* Adjust height as needed */
+        height: 100dvh;
         overflow-y: auto;
         background: var(--seventh-color);
         position: fixed;
@@ -1550,7 +1550,7 @@ body {
     }
     
     #msg-box {
-        height: 83dvh;
+        height: calc(83dvh - 300px); /* Adjust height as needed */
     }
 
     .massanger {
