@@ -17,6 +17,23 @@ let setting = document.querySelector('.setting')
 //     }
 // });
 
+document.addEventListener('DOMContentLoaded', function() {
+  var kbShown = false;
+  var scrollDiv = document.querySelector('#msg-box');
+  var scrollDivHeight = scrollDiv.offsetHeight;
+
+  window.addEventListener('resize', function() {
+    if (!kbShown) {
+      scrollDiv.style.height = (scrollDivHeight / 2) + 'px';
+      kbShown = true;
+    } else {
+      scrollDiv.style.height = scrollDivHeight + 'px';
+      kbShown = false;
+    }
+  });
+});
+
+
 
 document.body.addEventListener('click', ({ target }) => {
     if ((!target.classList.contains('ul') &&
