@@ -1678,6 +1678,6 @@ body {
 }
 
 @media all and (max-height: 50dvh) {
-  #max-box{height: 50dvh;}
+  #msg-box{height: 50dvh}
     #main-box{height:50dvh}
 }
