@@ -4,7 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-const session = require('express-session')
+// const session = require('express-session')
+const session = require('cookie-session')
 const passport = require('passport')
 const flash = require('connect-flash')
 
@@ -17,11 +18,30 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+// app.use(session({
+//     resave: false,
+//     saveUninitialized: false,
+//     secret: "hellothere"
+// }))
+
+// here starts the fixing code from stack overflow
 app.use(session({
-    resave: false,
-    saveUninitialized: false,
-    secret: "hellothere"
-}))
+  cookie: {
+    secure: true,
+    maxAge: 60000
+  },
+  resave: false,
+  saveUninitialized: false,
+  secret: "hellothere"
+}));
+
+app.use(function(req, res, next){
+  if(!req.session){
+    return next(new Error("oh no"));
+  }
+  next();
+}) // newly added block of code (from stack overflow)
+
 app.use(passport.initialize())
 app.use(passport.session())
 passport.serializeUser(userSchema.serializeUser())
@@ -38,12 +58,12 @@ app.use('/', indexRouter);
 app.use('/users', userSchema);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
