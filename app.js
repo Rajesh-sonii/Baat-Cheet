@@ -4,8 +4,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-// const session = require('express-session')
-const session = require('cookie-session')
+const cors = require('cors');
+
+const session = require('express-session')
+// const session = require('cookie-session')
 const passport = require('passport')
 const flash = require('connect-flash')
 
@@ -14,33 +16,36 @@ var userSchema = require('./routes/users');
 
 var app = express();
 
+// newly added code
+app.use(cors());
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// app.use(session({
-//     resave: false,
-//     saveUninitialized: false,
-//     secret: "hellothere"
-// }))
+app.use(session({
+    resave: false,
+    saveUninitialized: false,
+    secret: "hellothere"
+}))
 
 // here starts the fixing code from stack overflow
-app.use(session({
-  cookie: {
-    secure: true,
-    maxAge: 60000
-  },
-  resave: false,
-  saveUninitialized: false,
-  secret: "hellothere"
-}));
+// app.use(session({
+//   cookie: {
+//     secure: true,
+//     maxAge: 60000
+//   },
+//   resave: false,
+//   saveUninitialized: false,
+//   secret: "hellothere"
+// }));
 
-app.use(function(req, res, next){
-  if(!req.session){
-    return next(new Error("oh no"));
-  }
-  next();
-}) // newly added block of code (from stack overflow)
+// app.use(function(req, res, next){
+//   if(!req.session){
+//     return next(new Error("oh no"));
+//   }
+//   next();
+// }) // newly added block of code (from stack overflow)
 
 app.use(passport.initialize())
 app.use(passport.session())

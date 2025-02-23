@@ -43,7 +43,8 @@ usp.on('connection', async (socket) => {
 
     socket.on('accRejReq', async (data) => {
         try {
-            const res = await fetch('http://localhost:3000/checkoutRequest',
+            // const res = await fetch('http://localhost:3000/checkoutRequest',
+            const res = await fetch('https://baat-cheet-production-f800.up.railway.app/checkoutRequest',
                 {
                     method: 'POST',
                     body: JSON.stringify({ acceptReject: status, request_id: id }),
